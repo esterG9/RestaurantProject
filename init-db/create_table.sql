@@ -21,20 +21,19 @@ CREATE TABLE CITY
 CREATE TABLE TOURIST
 (
   Tourist_ID INT NOT NULL,
-  First_Name VARCHAR(50) NOT NULL,
-  Last_Name VARCHAR(50) NOT NULL,
+  First_Name VARCHAR(100) NOT NULL,
+  Last_Name VARCHAR(100) NOT NULL,
   Email VARCHAR(100) NOT NULL,
-  Phone VARCHAR(20) NOT NULL,
-  language VARCHAR(50) NOT NULL,
-  password VARCHAR(50) NOT NULL,
+  Phone VARCHAR(30) NOT NULL,
+  language VARCHAR(100) NOT NULL,
+  password VARCHAR(100) NOT NULL,
   birthday DATE NOT NULL,
-  User_Name VARCHAR(50) NOT NULL,
+  User_Name VARCHAR(100) NOT NULL,
   
   PRIMARY KEY (Tourist_ID),
   UNIQUE (Email),
   UNIQUE (Phone),
   UNIQUE (User_Name),
-  -- אילוץ: תאריך לידה לא יכול להיות בעתיד
   CHECK (birthday < CURRENT_DATE)
 );
 
@@ -51,7 +50,6 @@ CREATE TABLE RESTAURANT
   PRIMARY KEY (Rest_ID),
   FOREIGN KEY (City_ID) REFERENCES CITY(City_ID),
   UNIQUE (Phone_Number),
-  -- אילוץ: מחיר חייב להיות מספר חיובי
   CHECK (Average_Price > 0)
 );
 
@@ -67,7 +65,6 @@ CREATE TABLE BOOKING
   PRIMARY KEY (Booking_ID),
   FOREIGN KEY (Tourist_ID) REFERENCES TOURIST(Tourist_ID),
   FOREIGN KEY (Rest_ID) REFERENCES RESTAURANT(Rest_ID),
-  -- אילוץ: לפחות אדם אחד בהזמנה
   CHECK (Num_Of_People > 0)
 );
 
@@ -94,6 +91,5 @@ CREATE TABLE RATING
   
   PRIMARY KEY (rate_num, Feedback_ID),
   FOREIGN KEY (Feedback_ID) REFERENCES FEEDBACK(Feedback_ID),
-  -- אילוץ: הדירוג חייב להיות בין 1 ל-5
   CHECK (degree >= 1 AND degree <= 5)
 );
