@@ -28,10 +28,14 @@ The system includes 4 main screens:
 
 Login / Register Screen
     Allows users to log in or create a new account
+    
 ![alt text](images/image-4.png)
+
 Profile Setup Screen
     Users enter personal details such as country, age, and preferences
+    
 ![alt text](images/image-5.png)
+
 Home Screen (Navigation Dashboard)
     Main screen after login
     Includes navigation bar:
@@ -39,17 +43,25 @@ Home Screen (Navigation Dashboard)
         Search by Location
         Search by Name
         Search by Profile
+        
 ![alt text](images/image-2.png)  
+
 ![alt text](images/image-6.png)
+
 Search & Restaurant Interaction Screen
     Displays restaurant results
     Allows users to:
         View restaurant details
         Make reservations
         Leave feedback
+        
 ![alt text](images/image-7.png)
+
 ![alt text](images/image-8.png)
+
 ![alt text](images/image-9.png)
+
+
 
 🔗 Link to AI Studio:
 https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPreview=true&showAssistant=true
@@ -98,10 +110,13 @@ Large datasets were generated using an external tool
 Data Volume
 Each table contains at least 500 records
 Two tables contain at least 20,000 records
+
 💾 Backup & Restore
 A backup file was created for the database
 The backup file includes the date of creation
 The backup was successfully restored on another computer
+🔗 Backup File:
+[Open Backup File](https://github.com/esterG9/RestaurantProject/blob/main/restaurant_backup_14_04_26%20(1))
 
 📸 Screenshot of backup
 ![alt text](images/image-11.png)
