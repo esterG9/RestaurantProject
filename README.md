@@ -28,10 +28,10 @@ The system includes 4 main screens:
 
 Login / Register Screen
     Allows users to log in or create a new account
-    ![alt text](image-4.png)
+![alt text](images/image-4.png)
 Profile Setup Screen
     Users enter personal details such as country, age, and preferences
-    ![alt text](image-5.png)
+![alt text](images/image-5.png)
 Home Screen (Navigation Dashboard)
     Main screen after login
     Includes navigation bar:
@@ -39,16 +39,17 @@ Home Screen (Navigation Dashboard)
         Search by Location
         Search by Name
         Search by Profile
-    ![alt text](image-6.png)
+![alt text](images/image-2.png)  
+![alt text](images/image-6.png)
 Search & Restaurant Interaction Screen
     Displays restaurant results
     Allows users to:
         View restaurant details
         Make reservations
         Leave feedback
-    ![alt text](image-7.png)
-    ![alt text](image-8.png)
-    ![alt text](image-9.png)
+![alt text](images/image-7.png)
+![alt text](images/image-8.png)
+![alt text](images/image-9.png)
 
 🔗 Link to AI Studio:
 https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPreview=true&showAssistant=true
@@ -57,11 +58,11 @@ https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPrevie
 🗄️ Database Design
 ERD Diagram
 
-📸 ![alt text](image.png)
+📸 ![alt text](images/image-10.png)
 
 DSD Diagram
 
-📸 ![alt text](image-1.png)
+📸 ![alt text](images/image-1.png)
 
 
 ⚙️ Design Decisions
@@ -103,4 +104,6 @@ The backup file includes the date of creation
 The backup was successfully restored on another computer
 
 📸 Screenshot of backup
+![alt text](images/image-11.png)
 📸 Screenshot of restore
+c:\Users\user1\Downloads\combined_pgadmin.png
