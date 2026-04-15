@@ -106,4 +106,4 @@ The backup was successfully restored on another computer
 📸 Screenshot of backup
 ![alt text](images/image-11.png)
 📸 Screenshot of restore
-c:\Users\user1\Downloads\combined_pgadmin.png
+![alt text](images/combined_pgadmin.png)
