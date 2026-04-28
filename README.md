@@ -95,6 +95,32 @@ The database was normalized to at least 3NF to prevent redundancy and ensure dat
 Relationships were defined using foreign keys to maintain data integrity
 Constraints were added (such as UNIQUE fields for email and phone) to ensure valid and realistic data
 
+📜 SQL Scripts
+1. Create Tables Script
+
+This file contains all SQL commands required to create the database tables based on the designed schema (ERD & DSD).
+It defines tables, primary keys, foreign keys, and constraints.
+
+🔗 createTables.sql
+
+2. Drop Tables Script
+
+This file includes SQL commands to safely delete all tables from the database in the correct order, preventing dependency errors between tables.
+
+🔗 dropTables.sql
+
+3. Insert Data Script
+
+This file contains SQL INSERT statements used to populate the database with initial data for all tables.
+
+🔗 insertTables.sql
+
+4. Select Queries Script
+
+This file includes SELECT queries that retrieve and display all data from the database tables, used for testing and verification.
+
+🔗 selectAll.sql
+
 📥 Data Insertion Methods
 We used at least 3 different methods to insert data into the database:
 
@@ -122,3 +148,7 @@ The backup was successfully restored on another computer
 ![alt text](images/image-11.png)
 📸 Screenshot of restore
 ![alt text](images/combined_pgadmin.png)
+
+DSD diagram from pgadmin
+
+![Uploading image.png…]()
