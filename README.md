@@ -101,25 +101,25 @@ Constraints were added (such as UNIQUE fields for email and phone) to ensure val
 This file contains all SQL commands required to create the database tables based on the designed schema (ERD & DSD).
 It defines tables, primary keys, foreign keys, and constraints.
 
-🔗 createTables.sql
+[create_table.sql](init-db/create_table.sql)
 
 2. Drop Tables Script
 
 This file includes SQL commands to safely delete all tables from the database in the correct order, preventing dependency errors between tables.
 
-🔗 dropTables.sql
+🔗 [dropTables.sql](init-db/dropTables.sql)
 
 3. Insert Data Script
 
 This file contains SQL INSERT statements used to populate the database with initial data for all tables.
 
-🔗 insertTables.sql
+🔗 [insertTables.sql](init-db/insertTables.sql)
 
 4. Select Queries Script
 
 This file includes SELECT queries that retrieve and display all data from the database tables, used for testing and verification.
 
-🔗 selectAll.sql
+🔗 [selectAll.sql](init-db/selectAll.sql)
 
 📥 Data Insertion Methods
 We used at least 3 different methods to insert data into the database:
@@ -151,4 +151,4 @@ The backup was successfully restored on another computer
 
 DSD diagram from pgadmin
 
-![Uploading image.png…]()
+![alt text](images/inage-12.jpeg)
