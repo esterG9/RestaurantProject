@@ -151,4 +151,4 @@ The backup was successfully restored on another computer
 
 DSD diagram from pgadmin
 
-![alt text](images/inage-12.png)
+![alt text](images/inage-12.jpeg)
