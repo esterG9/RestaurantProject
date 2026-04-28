@@ -101,7 +101,7 @@ Constraints were added (such as UNIQUE fields for email and phone) to ensure val
 This file contains all SQL commands required to create the database tables based on the designed schema (ERD & DSD).
 It defines tables, primary keys, foreign keys, and constraints.
 
-[create_table.sql](init-db/create_table.sql)
+🔗[create_table.sql](init-db/create_table.sql)
 
 2. Drop Tables Script
 
@@ -121,26 +121,33 @@ This file includes SELECT queries that retrieve and display all data from the da
 
 🔗 [selectAll.sql](init-db/selectAll.sql)
 
-📥 Data Insertion Methods
-We used at least 3 different methods to insert data into the database:
+## Data Population Methods
 
-1. SQL INSERT Commands
-Data was inserted manually using SQL INSERT statements
-📸 Screenshot
-2. Python / CSV Data Generation
-Data was generated using scripts / CSV files and imported into the database
-📸 Screenshot
-3. External Tool (Mockaroo / Generatedata)
-Large datasets were generated using an external tool
-📸 Screenshot
-Data Volume
-Each table contains at least 500 records
-Two tables contain at least 20,000 records
+In this project, data was populated using three different methods:
+
+1. **Python Script Generation**
+   A Python script was used to generate large-scale synthetic data (e.g., 20,000 booking records). The script creates realistic randomized values and exports them into CSV files.
+
+   ![alt text](images/15.png)
+
+3. **External Data Generation Tool (Mockaroo)**
+   The Mockaroo website was used to generate structured and realistic datasets for related tables (such as tourists and restaurants).
+
+   ![alt text](images/13.jpeg)
+
+   ![alt text](images/17.png)
+
+5. **Bulk Import Using CSV (COPY command)**
+   The generated CSV files (from Python) were loaded into the database using the SQL `COPY` command for efficient bulk insertion.
+
+   ![alt text](images/16.png)
 
 💾 Backup & Restore
-A backup file was created for the database
-The backup file includes the date of creation
-The backup was successfully restored on another computer
+
+ A backup file was created for the database
+ The backup file includes the date of creation
+ The backup was successfully restored on another computer
+ 
 🔗 Backup File:
 [Open Backup File](https://github.com/esterG9/RestaurantProject/blob/main/restaurant_backup_14_04_26%20(1))
 
@@ -149,6 +156,6 @@ The backup was successfully restored on another computer
 📸 Screenshot of restore
 ![alt text](images/combined_pgadmin.png)
 
-DSD diagram from pgadmin
+DSD diagram from pgAdmin
 
 ![alt text](images/inage-12.jpeg)
