@@ -151,4 +151,4 @@ The backup was successfully restored on another computer
 
 DSD diagram from pgadmin
 
-![Uploading image.png…]()
+![alt text](images/image-12.png)
