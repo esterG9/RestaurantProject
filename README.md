@@ -101,7 +101,7 @@ Constraints were added (such as UNIQUE fields for email and phone) to ensure val
 This file contains all SQL commands required to create the database tables based on the designed schema (ERD & DSD).
 It defines tables, primary keys, foreign keys, and constraints.
 
-🔗 createTables.sql
+[create_table.sql](init-db/create_table.sql)
 
 2. Drop Tables Script
 
