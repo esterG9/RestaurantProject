@@ -160,7 +160,9 @@ DSD diagram from pgAdmin
 
 ![alt text](images/inage-12.jpeg)
 
-step b
+**step b**
+
+**שאלתות SELECT**
 ```sql
 --1.שאילתת חיפוש מסעדה על פי מיקום
 - שיטה ראשונה
@@ -436,3 +438,50 @@ WHERE Rest_ID NOT IN (
 ![alt text](images/Delete_query3(before).png)
 
 ![alt text](images/Delete_Query3(After).png)
+
+**אילוצים**
+--1.אילוץ על מספר אנשים להזמנה לפחות 1 והכמות לא תעלה על 20
+תיאור השינוי: הוספת אילוץ CHECK לטבלת BOOKING שמוודא כי מספר האנשים בהזמנה (Num_Of_People) הוא תמיד חיובי (גדול מ-0) ולא עולה על 20, כדי למנוע טעויות הקלדה או הזמנות לא הגיוניות.
+
+```sql
+ALTER TABLE BOOKING 
+ADD CONSTRAINT chk_num_people_range 
+CHECK (Num_Of_People > 0 AND Num_Of_People <= 20);
+```
+--בדיקה
+```sql
+INSERT INTO BOOKING (Booking_ID, Tourist_ID, Rest_ID, Booking_Date, Num_Of_People, Status)
+VALUES (999999, 1, 1, '2026-05-04', 25, 'Confirmed');
+```
+![alt text](images/Error_from_constraint1.png)
+
+
+--2.אילוץ על מספר הטלפון של המסעדה חייב להיות מספרים בלבדאו סימן ידוע למספר טלפון
+תיאור השינוי: הוספת אילוץ CHECK המשתמש בביטוי רגולרי (Regular Expression) כדי לוודא שמספר הטלפון של המסעדה מכיל ספרות בלבד (או תווים בסיסיים כמו מקף). זה מוודא שלא יוכנס טקסט חופשי לעמודת הטלפון.
+```sql
+ALTER TABLE RESTAURANT 
+ADD CONSTRAINT chk_rest_phone_numeric 
+CHECK (Phone_Number ~ '^[0-9+\-]+$');
+```
+-- בדיקה
+```sql
+UPDATE RESTAURANT 
+SET Phone_Number = 'Call-Me-Now' 
+WHERE Rest_ID = (SELECT MIN(Rest_ID) FROM RESTAURANT);
+```
+![alt text](images/Error_from_constraint2.png)
+
+--3.אילוץ על תאריך המשוב לא יהיה בעתיד
+תיאור השינוי: הוספת אילוץ CHECK לטבלת FEEDBACK המבטיח שתאריך המשוב (Feedback_Date) יהיה קטן או שווה לתאריך הנוכחי (CURRENT_DATE). זה מונע "זיוף" של משובים עתידיים או טעויות הקלדה בשנה.
+```sql
+ALTER TABLE FEEDBACK 
+ADD CONSTRAINT chk_feedback_not_future 
+CHECK (Feedback_Date <= CURRENT_DATE);
+```
+--בדיקה
+```sql
+INSERT INTO FEEDBACK (Feedback_ID, Feedback_Date, Review_Title, Comment, Tourist_ID, Rest_ID)
+VALUES (888888, '2028-01-01', 'Future Meal', 'The food was great in the future!', 1, 1);
+```
+
+![alt text](images/Error_from_constraint3.png)
