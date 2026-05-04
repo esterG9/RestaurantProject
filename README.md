@@ -272,6 +272,7 @@ WHERE f.Rest_ID IN (
 )
 ORDER BY f.Feedback_Date DESC;
 ```
+![alt text](images/Query_result3.png)
 
 ```sql
 
@@ -303,6 +304,7 @@ SELECT
 FROM TOURIST t
 ORDER BY Num_Of_Bookings DESC;
 ```
+![alt text](images/Query_result4.png)
 
 ```sql
 
@@ -318,6 +320,8 @@ WHERE EXTRACT(YEAR FROM Booking_Date) = 2025
   AND EXTRACT(MONTH FROM Booking_Date) = 1
 ORDER BY Booking_Date;
 ```
+![alt text](images/Query_result5.png)
+
 ```sql
 
 --6.מי הם 5 התיירים הכי פעילים שביצעו הכי הרבה הזמנות מאושרות
@@ -335,6 +339,8 @@ HAVING COUNT(b.Booking_ID) > 1
 ORDER BY Total_Confirmed_Bookings DESC
 LIMIT 5;
 ```
+
+![alt text](images/Query_result6.png)
 
 ```sql
 
@@ -355,6 +361,8 @@ JOIN RESTAURANT r
 WHERE b.Status = 'Cancelled'
 ORDER BY b.Booking_Date DESC;
 ```
+
+![alt text](images/Query_result7.png)
 
 ```sql
 
@@ -379,6 +387,8 @@ ORDER BY
     r.Rest_Name;
 ```
 
+![alt text](images/Query_result8.png)
+
 ```sql
 
 --1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
@@ -391,6 +401,10 @@ WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
 );
 
 ```
+![alt text](images/Delete_query1(before).png)
+
+![alt text](images/Delete_Query1(After).png)
+
 ```sql
 --2.שאילתה מוחקת דירוגים גרועים למסעדה ספציפית
 DELETE FROM RATING
@@ -405,6 +419,11 @@ WHERE degree = 1
     )
 );
 ```
+
+![alt text](images/Delete_query2(before).png)
+
+![alt text](images/Delete_Query2(After).png)
+
 ```sql
 
 --3.שאילתה שמוחקת מסעדות שלא הוזמנו בהם הזמנות
@@ -414,3 +433,6 @@ WHERE Rest_ID NOT IN (
     FROM BOOKING
 );
 ```
+![alt text](images/Delete_query3(before).png)
+
+![alt text](images/Delete_Query3(After).png)
