@@ -186,6 +186,8 @@ WHERE r.City_ID IN (
 )
 ORDER BY r.Rest_Name;
 
+![alt text](images/Query result 1 - Copy.png)
+
 --2.שאילתת חיפוש מסעדה על פי דירוג
 -- שיטה ראשונה
 SELECT r.Rest_Name, r.Cuisine_Type, r.Average_Price
@@ -208,6 +210,8 @@ WHERE Rest_ID IN (
     WHERE ra.degree = 5
 )
 ORDER BY Average_Price DESC;
+
+![alt text](images/Query result 2 - Copy.png)
 
 --3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
 
@@ -345,3 +349,32 @@ ORDER BY
     c.City_Name,
     r.Cuisine_Type,
     r.Rest_Name;
+
+--1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
+DELETE FROM BOOKING
+WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
+  AND Tourist_ID = (
+    SELECT Tourist_ID 
+    FROM TOURIST 
+    WHERE TRIM(Email) = 'cwessell5@skype.com'
+);
+
+--2.שאילתה מוחקת דירוגים גרועים למסעדה ספציפית
+DELETE FROM RATING
+WHERE degree = 1 
+  AND Feedback_ID IN (
+    SELECT Feedback_ID 
+    FROM FEEDBACK 
+    WHERE Rest_ID IN (
+        SELECT Rest_ID 
+        FROM RESTAURANT 
+        WHERE TRIM(Rest_Name) = 'Jayo'
+    )
+);
+
+--3.שאילתה שמוחקת מסעדות שלא הוזמנו בהם הזמנות
+DELETE FROM RESTAURANT
+WHERE Rest_ID NOT IN (
+    SELECT DISTINCT Rest_ID 
+    FROM BOOKING
+);
