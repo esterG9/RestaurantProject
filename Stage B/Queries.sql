@@ -212,7 +212,5 @@ WHERE Rest_ID NOT IN (
     FROM BOOKING
 );
 
-insert INTO CITY (City_ID, City_Name, Country_ID) values (501, 'Rishon-Lezion', 80);
-insert into RESTAURANT (Rest_ID, Rest_Name, Address, Cuisine_Type, Phone_Number, Average_Price, City_ID) values (501, 'Biga', 'Modin-Maccabim-Reut', 'Italian', '0779861969', 300.5, 501);
 
 
