@@ -29,12 +29,12 @@ The system includes 4 main screens:
 Login / Register Screen
     Allows users to log in or create a new account
     
-![alt text](images/image-4.png)
+![alt text](images/login_page.png)
 
 Profile Setup Screen
     Users enter personal details such as country, age, and preferences
     
-![alt text](images/image-5.png)
+![alt text](images/user-profile.png)
 
 Home Screen (Navigation Dashboard)
     Main screen after login
@@ -44,9 +44,9 @@ Home Screen (Navigation Dashboard)
         Search by Name
         Search by Profile
         
-![alt text](images/image-2.png)  
+![alt text](images/home-search.png)  
 
-![alt text](images/image-6.png)
+![alt text](images/search-location.png)
 
 Search & Restaurant Interaction Screen
     Displays restaurant results
@@ -55,11 +55,11 @@ Search & Restaurant Interaction Screen
         Make reservations
         Leave feedback
         
-![alt text](images/image-7.png)
+![alt text](images/location-recommend.png)
 
-![alt text](images/image-8.png)
+![alt text](images/feedback-form.png)
 
-![alt text](images/image-9.png)
+![alt text](images/reserve-table.png)
 
 
 
@@ -70,11 +70,11 @@ https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPrevie
 🗄️ Database Design
 ERD Diagram
 
-📸 ![alt text](images/image-10.png)
+📸 ![alt text](images/ERD_Diagram.png)
 
 DSD Diagram
 
-📸 ![alt text](images/image-1.png)
+📸 ![alt text](images/Dsd_diagram.png)
 
 
 ⚙️ Design Decisions
@@ -128,19 +128,19 @@ In this project, data was populated using three different methods:
 1. **Python Script Generation**
    A Python script was used to generate large-scale synthetic data (e.g., 20,000 booking records). The script creates realistic randomized values and exports them into CSV files.
 
-   ![alt text](images/15.png)
+   ![alt text](images/Python_Script.png)
 
 3. **External Data Generation Tool (Mockaroo)**
    The Mockaroo website was used to generate structured and realistic datasets for related tables (such as tourists and restaurants).
 
-   ![alt text](images/13.jpeg)
+   ![alt text](images/Mockaroo.jpeg)
 
-   ![alt text](images/17.png)
+   ![alt text](images/feedback-insert.png)
 
 5. **Bulk Import Using CSV (COPY command)**
    The generated CSV files (from Python) were loaded into the database using the SQL `COPY` command for efficient bulk insertion.
 
-   ![alt text](images/16.png)
+   ![alt text](images/COPY_command.png)
 
 💾 Backup & Restore
 
@@ -152,13 +152,13 @@ In this project, data was populated using three different methods:
 [Open Backup File](https://github.com/esterG9/RestaurantProject/blob/main/restaurant_backup_14_04_26%20(1))
 
 📸 Screenshot of backup
-![alt text](images/image-11.png)
+![alt text](images/backup.png)
 📸 Screenshot of restore
-![alt text](images/combined_pgadmin.png)
+![alt text](images/restore.png)
 
 DSD diagram from pgAdmin
 
-![alt text](images/inage-12.jpeg)
+![alt text](images/DSD_pgAdmin.jpeg)
 
 **step b**
 
