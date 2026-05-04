@@ -190,7 +190,7 @@ ORDER BY r.Rest_Name;
 
 ```
 
-![alt text](images/Query_result _1 _- _Copy.png)
+![alt text](images/Query_result1.png)
 
 ```sql
 
@@ -220,7 +220,7 @@ WHERE Rest_ID IN (
 ORDER BY Average_Price DESC;
 ```
 
-![alt text](images/Query result 2 - Copy.png)
+![alt text](images/Query_result2.png)
 
 ```sql
 
