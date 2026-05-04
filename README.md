@@ -161,10 +161,9 @@ DSD diagram from pgAdmin
 ![alt text](images/inage-12.jpeg)
 
 step b
-
---1.שאילתת חיפוש מסעדה על פי מיקום
--- שיטה ראשונה
 ```sql
+--1.שאילתת חיפוש מסעדה על פי מיקום
+- שיטה ראשונה
 SELECT r.Rest_Name, r.Address, c.City_Name, co.Country_Name
 FROM RESTAURANT r
 JOIN CITY c ON r.City_ID = c.City_ID
@@ -190,8 +189,10 @@ WHERE r.City_ID IN (
 ORDER BY r.Rest_Name;
 
 ```
+
 ![alt text](images/Query_result _1 _- _Copy.png)
 
+```sql
 
 --2.שאילתת חיפוש מסעדה על פי דירוג
 -- שיטה ראשונה
@@ -217,9 +218,11 @@ WHERE Rest_ID IN (
     WHERE ra.degree = 5
 )
 ORDER BY Average_Price DESC;
+```
 
 ![alt text](images/Query result 2 - Copy.png)
 
+```sql
 
 --3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
 -- שיטה ראשונה
@@ -268,6 +271,9 @@ WHERE f.Rest_ID IN (
     WHERE res.Rest_Name = 'Jayo'
 )
 ORDER BY f.Feedback_Date DESC;
+```
+
+```sql
 
 
 --4.הצגת מספר הזמנות לכל תייר
@@ -296,6 +302,9 @@ SELECT
 
 FROM TOURIST t
 ORDER BY Num_Of_Bookings DESC;
+```
+
+```sql
 
 --5.השאילתה מציגה את מספר ההזמנות שבוצעו בחודש ושנה מסוימים
 SELECT 
@@ -308,6 +317,8 @@ FROM BOOKING
 WHERE EXTRACT(YEAR FROM Booking_Date) = 2025
   AND EXTRACT(MONTH FROM Booking_Date) = 1
 ORDER BY Booking_Date;
+```
+```sql
 
 --6.מי הם 5 התיירים הכי פעילים שביצעו הכי הרבה הזמנות מאושרות
 SELECT 
@@ -323,6 +334,9 @@ GROUP BY t.Tourist_ID, t.First_Name, t.Last_Name, t.Email
 HAVING COUNT(b.Booking_ID) > 1
 ORDER BY Total_Confirmed_Bookings DESC
 LIMIT 5;
+```
+
+```sql
 
 --7.הזמנות שבוטלו
 SELECT
@@ -340,6 +354,9 @@ JOIN RESTAURANT r
     ON b.Rest_ID = r.Rest_ID
 WHERE b.Status = 'Cancelled'
 ORDER BY b.Booking_Date DESC;
+```
+
+```sql
 
 --8.הצגת המסעדה הכי זולה בכל עיר ולכל סוג מטבח
 SELECT
@@ -360,6 +377,9 @@ ORDER BY
     c.City_Name,
     r.Cuisine_Type,
     r.Rest_Name;
+```
+
+```sql
 
 --1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
 DELETE FROM BOOKING
@@ -370,6 +390,8 @@ WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
     WHERE TRIM(Email) = 'cwessell5@skype.com'
 );
 
+```
+```sql
 --2.שאילתה מוחקת דירוגים גרועים למסעדה ספציפית
 DELETE FROM RATING
 WHERE degree = 1 
@@ -382,6 +404,8 @@ WHERE degree = 1
         WHERE TRIM(Rest_Name) = 'Jayo'
     )
 );
+```
+```sql
 
 --3.שאילתה שמוחקת מסעדות שלא הוזמנו בהם הזמנות
 DELETE FROM RESTAURANT
@@ -389,3 +413,4 @@ WHERE Rest_ID NOT IN (
     SELECT DISTINCT Rest_ID 
     FROM BOOKING
 );
+```
