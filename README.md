@@ -391,9 +391,10 @@ ORDER BY
 
 ![alt text](images/Query_result8.png)
 
-```sql
+
 
 **שאילתות UPDATE**
+
 --1.שאיתה שמעכנת...
 ```sql
 UPDATE BOOKING
@@ -403,6 +404,7 @@ WHERE Booking_Date < CURRENT_DATE
 ```
 
 --2. שאילתה שמעדכנת...
+
 ```sql
 UPDATE RESTAURANT
 SET Average_Price = Average_Price * 1.10
@@ -415,6 +417,7 @@ WHERE City_ID IN (
 
 
 **שאילתות DELETE**
+
 --1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
 DELETE FROM BOOKING
 WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
