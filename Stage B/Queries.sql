@@ -201,7 +201,7 @@ WHERE degree = 1
     WHERE Rest_ID IN (
         SELECT Rest_ID 
         FROM RESTAURANT 
-        WHERE TRIM(Rest_Name) = 'Jayo'
+        WHERE TRIM(Rest_Name) = 'Voonix'
     )
 );
 
