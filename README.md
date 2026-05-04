@@ -393,6 +393,28 @@ ORDER BY
 
 ```sql
 
+**שאילתות UPDATE**
+--1.שאיתה שמעכנת...
+```sql
+UPDATE BOOKING
+SET Status = 'Completed'
+WHERE Booking_Date < CURRENT_DATE
+  AND Status = 'Confirmed';
+```
+
+--2. שאילתה שמעדכנת...
+```sql
+UPDATE RESTAURANT
+SET Average_Price = Average_Price * 1.10
+WHERE City_ID IN (
+    SELECT City_ID
+    FROM CITY
+    WHERE City_Name = 'Fier'
+);
+```
+
+
+**שאילתות DELETE**
 --1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
 DELETE FROM BOOKING
 WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
