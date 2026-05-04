@@ -161,8 +161,10 @@ DSD diagram from pgAdmin
 ![alt text](images/inage-12.jpeg)
 
 step b
+
 --1.שאילתת חיפוש מסעדה על פי מיקום
 -- שיטה ראשונה
+
 SELECT r.Rest_Name, r.Address, c.City_Name, co.Country_Name
 FROM RESTAURANT r
 JOIN CITY c ON r.City_ID = c.City_ID
@@ -171,6 +173,7 @@ WHERE TRIM(co.Country_Name) LIKE 'Albania'
 ORDER BY r.Rest_Name;
 
 -- שיטה שניה
+
 SELECT 
     r.Rest_Name, 
     r.Address, 
@@ -186,10 +189,13 @@ WHERE r.City_ID IN (
 )
 ORDER BY r.Rest_Name;
 
+
 ![alt text](images/Query result 1 - Copy.png)
+
 
 --2.שאילתת חיפוש מסעדה על פי דירוג
 -- שיטה ראשונה
+
 SELECT r.Rest_Name, r.Cuisine_Type, r.Average_Price
 FROM RESTAURANT r
 WHERE EXISTS (
@@ -201,6 +207,7 @@ WHERE EXISTS (
 ORDER BY r.Average_Price DESC;
 
 -- שיטה שניה
+
 SELECT Rest_Name, Cuisine_Type, Average_Price
 FROM RESTAURANT
 WHERE Rest_ID IN (
@@ -212,6 +219,7 @@ WHERE Rest_ID IN (
 ORDER BY Average_Price DESC;
 
 ![alt text](images/Query result 2 - Copy.png)
+
 
 --3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
 
