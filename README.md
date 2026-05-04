@@ -189,9 +189,7 @@ WHERE r.City_ID IN (
 )
 ORDER BY r.Rest_Name;
 
-
-
-
+```
 ![alt text](images/Query_result _1 _- _Copy.png)
 
 
