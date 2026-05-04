@@ -159,3 +159,189 @@ In this project, data was populated using three different methods:
 DSD diagram from pgAdmin
 
 ![alt text](images/inage-12.jpeg)
+
+step b
+--1.שאילתת חיפוש מסעדה על פי מיקום
+-- שיטה ראשונה
+SELECT r.Rest_Name, r.Address, c.City_Name, co.Country_Name
+FROM RESTAURANT r
+JOIN CITY c ON r.City_ID = c.City_ID
+JOIN COUNTRY co ON c.Country_ID = co.Country_ID
+WHERE TRIM(co.Country_Name) LIKE 'Albania'
+ORDER BY r.Rest_Name;
+
+-- שיטה שניה
+SELECT 
+    r.Rest_Name, 
+    r.Address, 
+    (SELECT c.City_Name FROM CITY c WHERE c.City_ID = r.City_ID) AS City_Name,
+    (SELECT co.Country_Name FROM COUNTRY co 
+     JOIN CITY ci ON co.Country_ID = ci.Country_ID 
+     WHERE ci.City_ID = r.City_ID) AS Country_Name
+FROM RESTAURANT r
+WHERE r.City_ID IN (
+    SELECT c.City_ID FROM CITY c WHERE c.Country_ID = (
+        SELECT co.Country_ID FROM COUNTRY co WHERE TRIM(co.Country_Name) = 'Albania'
+    )
+)
+ORDER BY r.Rest_Name;
+
+--2.שאילתת חיפוש מסעדה על פי דירוג
+-- שיטה ראשונה
+SELECT r.Rest_Name, r.Cuisine_Type, r.Average_Price
+FROM RESTAURANT r
+WHERE EXISTS (
+    SELECT 1 
+    FROM FEEDBACK f
+    JOIN RATING ra ON f.Feedback_ID = ra.Feedback_ID
+    WHERE f.Rest_ID = r.Rest_ID AND ra.degree = 5
+)
+ORDER BY r.Average_Price DESC;
+
+-- שיטה שניה
+SELECT Rest_Name, Cuisine_Type, Average_Price
+FROM RESTAURANT
+WHERE Rest_ID IN (
+    SELECT f.Rest_ID
+    FROM FEEDBACK f
+    JOIN RATING ra ON f.Feedback_ID = ra.Feedback_ID
+    WHERE ra.degree = 5
+)
+ORDER BY Average_Price DESC;
+
+--3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
+
+-- שיטה ראשונה
+SELECT
+    f.Feedback_ID,
+    res.Rest_Name,
+    t.First_Name,
+    t.Last_Name,
+    f.Feedback_Date,
+    f.Review_Title,
+    f.Comment
+FROM FEEDBACK f
+JOIN RESTAURANT res
+    ON f.Rest_ID = res.Rest_ID
+JOIN TOURIST t
+    ON f.Tourist_ID = t.Tourist_ID
+WHERE res.Rest_Name = 'Jayo'
+ORDER BY f.Feedback_Date DESC;
+
+-- שיטה שניה
+SELECT
+    f.Feedback_ID,
+
+    (SELECT res.Rest_Name
+     FROM RESTAURANT res
+     WHERE res.Rest_ID = f.Rest_ID) AS Rest_Name,
+
+    (SELECT t.First_Name
+     FROM TOURIST t
+     WHERE t.Tourist_ID = f.Tourist_ID) AS First_Name,
+
+    (SELECT t.Last_Name
+     FROM TOURIST t
+     WHERE t.Tourist_ID = f.Tourist_ID) AS Last_Name,
+
+    f.Feedback_Date,
+    f.Review_Title,
+    f.Comment
+FROM FEEDBACK f
+WHERE f.Rest_ID IN (
+    SELECT res.Rest_ID
+    FROM RESTAURANT res
+    WHERE res.Rest_Name = 'Jayo'
+)
+ORDER BY f.Feedback_Date DESC;
+
+--4.הצגת מספר הזמנות לכל תייר
+-- שיטה ראשונה
+SELECT
+    t.Tourist_ID,
+    t.First_Name,
+    t.Last_Name,
+    COUNT(b.Booking_ID) AS Num_Of_Bookings
+FROM TOURIST t
+LEFT JOIN BOOKING b
+    ON t.Tourist_ID = b.Tourist_ID
+GROUP BY
+    t.Tourist_ID, t.First_Name, t.Last_Name
+ORDER BY Num_Of_Bookings DESC;
+
+-- שיטה שניה
+SELECT
+    t.Tourist_ID,
+    t.First_Name,
+    t.Last_Name,
+
+    (SELECT COUNT(*)
+     FROM BOOKING b
+     WHERE b.Tourist_ID = t.Tourist_ID) AS Num_Of_Bookings
+
+FROM TOURIST t
+ORDER BY Num_Of_Bookings DESC;
+
+--5.השאילתה מציגה את מספר ההזמנות שבוצעו בחודש ושנה מסוימים
+SELECT 
+    Booking_ID,
+    Booking_Date,
+    Num_Of_People,
+    Status,
+    Tourist_ID
+FROM BOOKING
+WHERE EXTRACT(YEAR FROM Booking_Date) = 2025
+  AND EXTRACT(MONTH FROM Booking_Date) = 1
+ORDER BY Booking_Date;
+
+--6.מי הם 5 התיירים הכי פעילים שביצעו הכי הרבה הזמנות מאושרות
+SELECT 
+    t.First_Name, 
+    t.Last_Name, 
+    t.Email, 
+    COUNT(b.Booking_ID) AS Total_Confirmed_Bookings,
+    MAX(b.Booking_Date) AS Last_Booking_Date
+FROM TOURIST t
+JOIN BOOKING b ON t.Tourist_ID = b.Tourist_ID
+WHERE b.Status = 'Confirmed'
+GROUP BY t.Tourist_ID, t.First_Name, t.Last_Name, t.Email
+HAVING COUNT(b.Booking_ID) > 1
+ORDER BY Total_Confirmed_Bookings DESC
+LIMIT 5;
+
+--7.הזמנות שבוטלו
+SELECT
+    b.Booking_ID,
+    b.Booking_Date,
+    b.Num_Of_People,
+    b.Status,
+    t.First_Name,
+    t.Last_Name,
+    r.Rest_Name
+FROM BOOKING b
+JOIN TOURIST t
+    ON b.Tourist_ID = t.Tourist_ID
+JOIN RESTAURANT r
+    ON b.Rest_ID = r.Rest_ID
+WHERE b.Status = 'Cancelled'
+ORDER BY b.Booking_Date DESC;
+
+--8.הצגת המסעדה הכי זולה בכל עיר ולכל סוג מטבח
+SELECT
+    c.City_Name,
+    r.Cuisine_Type,
+    r.Rest_Name,
+    r.Average_Price
+FROM RESTAURANT r
+JOIN CITY c
+    ON r.City_ID = c.City_ID
+WHERE r.Average_Price = (
+    SELECT MIN(r2.Average_Price)
+    FROM RESTAURANT r2
+    WHERE r2.City_ID = r.City_ID
+      AND r2.Cuisine_Type = r.Cuisine_Type
+)
+ORDER BY
+    c.City_Name,
+    r.Cuisine_Type,
+    r.Rest_Name;
