@@ -164,7 +164,7 @@ step b
 
 --1.שאילתת חיפוש מסעדה על פי מיקום
 -- שיטה ראשונה
-
+```sql
 SELECT r.Rest_Name, r.Address, c.City_Name, co.Country_Name
 FROM RESTAURANT r
 JOIN CITY c ON r.City_ID = c.City_ID
@@ -190,7 +190,7 @@ WHERE r.City_ID IN (
 ORDER BY r.Rest_Name;
 
 
-![alt text](images/Query result 1 - Copy.png)
+![alt text](images/Query_result _1 _- _Copy.png)
 
 
 --2.שאילתת חיפוש מסעדה על פי דירוג
@@ -222,8 +222,8 @@ ORDER BY Average_Price DESC;
 
 
 --3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
-
 -- שיטה ראשונה
+
 SELECT
     f.Feedback_ID,
     res.Rest_Name,
@@ -240,7 +240,9 @@ JOIN TOURIST t
 WHERE res.Rest_Name = 'Jayo'
 ORDER BY f.Feedback_Date DESC;
 
+
 -- שיטה שניה
+
 SELECT
     f.Feedback_ID,
 
@@ -266,6 +268,7 @@ WHERE f.Rest_ID IN (
     WHERE res.Rest_Name = 'Jayo'
 )
 ORDER BY f.Feedback_Date DESC;
+
 
 --4.הצגת מספר הזמנות לכל תייר
 -- שיטה ראשונה
