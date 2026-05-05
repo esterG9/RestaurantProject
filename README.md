@@ -394,7 +394,8 @@ ORDER BY
 
 **שאילתות UPDATE**
 
-1. Completed -שאילתה שמעדכנת סטטוס הזמנות שעבר זמנן ל
+3. שאילתה שמעדכנת סטטוס הזמנות שעבר זמנן ל - Completed
+
 
 ```sql
 UPDATE BOOKING
@@ -411,7 +412,8 @@ WHERE Booking_Date < CURRENT_DATE
 ![after](images/update1after.jpeg)
 
 
-2.  Fier - שאילתה שמעלה את המחיר של מסעדות בעיר 
+3.שאילתה שמעלה את המחיר של מסעדות בעיר - Fier
+
 
 ```sql
 UPDATE RESTAURANT
@@ -449,6 +451,8 @@ SET password =
 
 
 **שאילתות DELETE**
+
+```sql
 
 --1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
 DELETE FROM BOOKING
