@@ -394,8 +394,7 @@ ORDER BY
 
 **שאילתות UPDATE**
 
-שאילתה שמעדכנת סטטוס הזמנות שעבר זמנן ל - Completed .1
-
+1. שאילתה שמעדכנת סטטוס הזמנות שעבר זמנן ל -Completed
 ```sql
 UPDATE BOOKING
 SET Status = 'Completed'
@@ -411,7 +410,7 @@ WHERE Booking_Date < CURRENT_DATE
 ![after](images/update1after.jpeg)
 
 
-2. שאילתה שמעלה את המחיר של מסעדות בעיר Fier
+2. שאילתה שמעלה את המחיר של מסעדות בעיר - Fier
 
 ```sql
 UPDATE RESTAURANT
