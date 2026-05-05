@@ -392,18 +392,24 @@ ORDER BY
 ![alt text](images/Query_result8.png)
 
 
-
 **שאילתות UPDATE**
 
---1.שאיתה שמעכנת...
+1. Completed -שאילתה שמעדכנת סטטוס הזמנות שעבר זמנן ל
+
 ```sql
 UPDATE BOOKING
 SET Status = 'Completed'
 WHERE Booking_Date < CURRENT_DATE
   AND Status = 'Confirmed';
 ```
+בסיס הנתונים לפני העדכון:
+![before](images/update1before.jpeg)
 
---2. שאילתה שמעדכנת...
+בסיס הנתונים אחרי העדכון:
+![after](images/update1after.jpeg)
+
+
+2.  Fier - שאילתה שמעלה את המחיר של מסעדות בעיר 
 
 ```sql
 UPDATE RESTAURANT
@@ -414,6 +420,26 @@ WHERE City_ID IN (
     WHERE City_Name = 'Fier'
 );
 ```
+בסיס הנתונים לפני העדכון:
+![before](images/update2before.jpeg)
+
+בסיס הנתונים אחרי העדכון:
+![after](images/update2after.jpeg)
+
+
+3. שאילתה שמאפסת סיסמאות לפי פרטי המשתמש - יוצרת סיסמה לפי שנת לידה, שם ומזהה
+
+```sql
+UPDATE TOURIST
+SET password =
+    TO_CHAR(birthday, 'YYYY') || First_Name || Tourist_ID;
+```
+בסיס הנתונים לפני העדכון:
+![before](images/update3before.jpeg)
+
+בסיס הנתונים אחרי העדכון:
+![after](images/update3after.jpeg)
+
 
 
 **שאילתות DELETE**
