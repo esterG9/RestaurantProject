@@ -213,4 +213,27 @@ WHERE Rest_ID NOT IN (
 );
 
 
+-- 1.Completed- עדכון סטטוס הזמנות שעבר זמנן ל 
+UPDATE BOOKING
+SET Status = 'Completed'
+WHERE Booking_Date < CURRENT_DATE
+  AND Status = 'Confirmed';
+
+
+-- 2.  Fier העלאת מחיר ממוצע ב־10% למסעדות בעיר 
+UPDATE RESTAURANT
+SET Average_Price = Average_Price * 1.10
+WHERE City_ID IN (
+    SELECT City_ID
+    FROM CITY
+    WHERE City_Name = 'Fier'
+);
+
+
+-- 3. איפוס סיסמאות לפי שנת לידה, שם ומזהה
+UPDATE TOURIST
+SET password =
+    TO_CHAR(birthday, 'YYYY') || First_Name || Tourist_ID;
+
+
 
