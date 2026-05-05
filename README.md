@@ -163,18 +163,21 @@ DSD diagram from pgAdmin
 **Stage B**
 
 **שאילתות SELECT**
+
+1.שאילתת חיפוש מסעדה על פי מיקום
+שיטה ראשונה
 ```sql
---1.שאילתת חיפוש מסעדה על פי מיקום
-- שיטה ראשונה
 SELECT r.Rest_Name, r.Address, c.City_Name, co.Country_Name
 FROM RESTAURANT r
 JOIN CITY c ON r.City_ID = c.City_ID
 JOIN COUNTRY co ON c.Country_ID = co.Country_ID
 WHERE TRIM(co.Country_Name) LIKE 'Albania'
 ORDER BY r.Rest_Name;
+```
 
--- שיטה שניה
+ שיטה שניה
 
+```sql
 SELECT 
     r.Rest_Name, 
     r.Address, 
@@ -189,17 +192,20 @@ WHERE r.City_ID IN (
     )
 )
 ORDER BY r.Rest_Name;
-
---השיטה הראשונה עם JOIN טובה ויעילה יותר, כי היא מחברת את הטבלאות בצורה ישירה וברורה. השיטה השנייה משתמשת בתתי־שאילתות, ולכן היא יותר מסורבלת ועלולה להיות איטית יותר כי היא מבצעת בדיקות פנימיות נוספות.
 ```
+
+השיטה הראשונה עם JOIN טובה ויעילה יותר, כי היא מחברת את הטבלאות בצורה ישירה וברורה. השיטה השנייה משתמשת בתתי־שאילתות, ולכן היא יותר מסורבלת ועלולה להיות איטית יותר כי היא מבצעת בדיקות פנימיות נוספות.
+
 
 ![alt text](images/Query_result1.png)
 
+
+
+
+2.שאילתת חיפוש מסעדה על פי דירוג
+שיטה ראשונה
+
 ```sql
-
---2.שאילתת חיפוש מסעדה על פי דירוג
--- שיטה ראשונה
-
 SELECT r.Rest_Name, r.Cuisine_Type, r.Average_Price
 FROM RESTAURANT r
 WHERE EXISTS (
@@ -209,9 +215,10 @@ WHERE EXISTS (
     WHERE f.Rest_ID = r.Rest_ID AND ra.degree = 5
 )
 ORDER BY r.Average_Price DESC;
+```
+ שיטה שניה
 
--- שיטה שניה
-
+```sql
 SELECT Rest_Name, Cuisine_Type, Average_Price
 FROM RESTAURANT
 WHERE Rest_ID IN (
@@ -221,17 +228,17 @@ WHERE Rest_ID IN (
     WHERE ra.degree = 5
 )
 ORDER BY Average_Price DESC;
-
---השיטה הראשונה עם EXISTS עדיפה כאן, כי היא בודקת אם קיימת לפחות ביקורת אחת עם דירוג 5 ועוצרת כשנמצאה התאמה. השיטה השנייה עם IN קודם יוצרת רשימה של מסעדות מתאימות ואז בודקת מול הרשימה, ולכן יכולה להיות פחות יעילה.
 ```
+
+השיטה הראשונה עם EXISTS עדיפה כאן, כי היא בודקת אם קיימת לפחות ביקורת אחת עם דירוג 5 ועוצרת כשנמצאה התאמה. השיטה השנייה עם IN קודם יוצרת רשימה של מסעדות מתאימות ואז בודקת מול הרשימה, ולכן יכולה להיות פחות יעילה.
+
 
 ![alt text](images/Query_result2.png)
 
+
+3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
+שיטה ראשונה
 ```sql
-
---3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
--- שיטה ראשונה
-
 SELECT
     f.Feedback_ID,
     res.Rest_Name,
@@ -247,10 +254,10 @@ JOIN TOURIST t
     ON f.Tourist_ID = t.Tourist_ID
 WHERE res.Rest_Name = 'Jayo'
 ORDER BY f.Feedback_Date DESC;
+```
+ שיטה שניה
 
-
--- שיטה שניה
-
+```sql
 SELECT
     f.Feedback_ID,
 
@@ -276,16 +283,17 @@ WHERE f.Rest_ID IN (
     WHERE res.Rest_Name = 'Jayo'
 )
 ORDER BY f.Feedback_Date DESC;
-
---השיטה הראשונה עם JOIN יעילה וברורה יותר, כי היא מחברת את הביקורות ישירות למסעדה ולתייר. השיטה השנייה משתמשת בתתי־שאילתות עבור כל שורה, ולכן היא פחות יעילה ויותר קשה לקריאה.
 ```
+
+השיטה הראשונה עם JOIN יעילה וברורה יותר, כי היא מחברת את הביקורות ישירות למסעדה ולתייר. השיטה השנייה משתמשת בתתי־שאילתות עבור כל שורה, ולכן היא פחות יעילה ויותר קשה לקריאה.
+
 ![alt text](images/Query_result3.png)
 
+
+
+4.הצגת מספר הזמנות לכל תייר
+שיטה ראשונה
 ```sql
-
-
---4.הצגת מספר הזמנות לכל תייר
--- שיטה ראשונה
 SELECT
     t.Tourist_ID,
     t.First_Name,
@@ -297,8 +305,10 @@ LEFT JOIN BOOKING b
 GROUP BY
     t.Tourist_ID, t.First_Name, t.Last_Name
 ORDER BY Num_Of_Bookings DESC;
+```
 
--- שיטה שניה
+שיטה שניה
+```sql
 SELECT
     t.Tourist_ID,
     t.First_Name,
@@ -310,14 +320,17 @@ SELECT
 
 FROM TOURIST t
 ORDER BY Num_Of_Bookings DESC;
-
---השיטה הראשונה עם LEFT JOIN ו־GROUP BY טובה יותר, כי היא מחשבת את מספר ההזמנות לכל התיירים ביחד. השיטה השנייה סופרת הזמנות בנפרד עבור כל תייר, ולכן יכולה להיות איטית יותר בטבלה גדולה.
 ```
+
+השיטה הראשונה עם LEFT JOIN ו־GROUP BY טובה יותר, כי היא מחשבת את מספר ההזמנות לכל התיירים ביחד. השיטה השנייה סופרת הזמנות בנפרד עבור כל תייר, ולכן יכולה להיות איטית יותר בטבלה גדולה.
+
+
 ![alt text](images/Query_result4.png)
 
-```sql
 
---5.השאילתה מציגה את מספר ההזמנות שבוצעו בחודש ושנה מסוימים
+
+5.השאילתה מציגה את מספר ההזמנות שבוצעו בחודש ושנה מסוימים
+```sql
 SELECT 
     Booking_ID,
     Booking_Date,
@@ -329,11 +342,12 @@ WHERE EXTRACT(YEAR FROM Booking_Date) = 2025
   AND EXTRACT(MONTH FROM Booking_Date) = 1
 ORDER BY Booking_Date;
 ```
+
 ![alt text](images/Query_result5.png)
 
-```sql
 
---6.מי הם 5 התיירים הכי פעילים שביצעו הכי הרבה הזמנות מאושרות
+6.מי הם 5 התיירים הכי פעילים שביצעו הכי הרבה הזמנות מאושרות
+```sql
 SELECT 
     t.First_Name, 
     t.Last_Name, 
@@ -351,9 +365,9 @@ LIMIT 5;
 
 ![alt text](images/Query_result6.png)
 
-```sql
 
---7.הזמנות שבוטלו
+7.הזמנות שבוטלו
+```sql
 SELECT
     b.Booking_ID,
     b.Booking_Date,
@@ -373,9 +387,9 @@ ORDER BY b.Booking_Date DESC;
 
 ![alt text](images/Query_result7.png)
 
-```sql
 
---8.הצגת המסעדה הכי זולה בכל עיר ולכל סוג מטבח
+8.הצגת המסעדה הכי זולה בכל עיר ולכל סוג מטבח
+```sql
 SELECT
     c.City_Name,
     r.Cuisine_Type,
@@ -456,9 +470,9 @@ SET password =
 
 **שאילתות DELETE**
 
-```sql
 
 --1.שאילתה מוחקת את ההזמנות שהושלמו או בוטלו לתייר שכתובת המייל שלו היא 'cwessell5@skype.com'
+```sql
 DELETE FROM BOOKING
 WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
   AND Tourist_ID = (
@@ -472,8 +486,9 @@ WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
 
 ![alt text](images/Delete_Query1(After).png)
 
-```sql
+
 --2.שאילתה מוחקת דירוגים גרועים למסעדה ספציפית
+```sql
 DELETE FROM RATING
 WHERE degree = 1 
   AND Feedback_ID IN (
@@ -491,9 +506,10 @@ WHERE degree = 1
 
 ![alt text](images/Delete_Query2(After).png)
 
-```sql
+
 
 --3.שאילתה שמוחקת מסעדות שלא הוזמנו בהם הזמנות
+```sql
 DELETE FROM RESTAURANT
 WHERE Rest_ID NOT IN (
     SELECT DISTINCT Rest_ID 
@@ -505,6 +521,7 @@ WHERE Rest_ID NOT IN (
 ![alt text](images/Delete_Query3(After).png)
 
 **אילוצים**
+
 --1.אילוץ על מספר אנשים להזמנה לפחות 1 והכמות לא תעלה על 20
 תיאור השינוי: הוספת אילוץ CHECK לטבלת BOOKING שמוודא כי מספר האנשים בהזמנה (Num_Of_People) הוא תמיד חיובי (גדול מ-0) ולא עולה על 20, כדי למנוע טעויות הקלדה או הזמנות לא הגיוניות.
 
