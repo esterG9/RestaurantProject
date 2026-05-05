@@ -550,6 +550,69 @@ VALUES (888888, '2028-01-01', 'Future Meal', 'The food was great in the future!'
 ```
 ![alt text](images/Error_from_constraint3.png)
 
+**ROLLBACK & COMMIT**
+
+**הדגמת ROLLBACK**
+
+ביצענו עדכון על טבלת ההזמנות שבו שינינו סטטוס של הזמנות שעבר זמנן ל־Completed, ולאחר מכן השתמשנו ב־ROLLBACK כדי לבטל את השינוי ולהחזיר את הנתונים למצבם המקורי.
+
+```sql
+BEGIN;
+
+UPDATE BOOKING
+SET Status = 'Completed'
+WHERE Booking_Date < CURRENT_DATE
+  AND Status = 'Confirmed';
+
+ROLLBACK;
+```
+מצב בסיס הנתונים לפני העדכון:
+
+![rollback before](images/update1before.jpeg)
+
+מצב בסיס הנתונים אחרי העדכון ולפני ROLLBACK:
+
+![rollback after update](images/update1after.jpeg)
+
+מצב בסיס הנתונים אחרי ROLLBACK:
+
+![rollback after rollback](images/update1before.jpeg)
+
+לאחר ביצוע ROLLBACK ניתן לראות שהנתונים חזרו למצב המקורי.
+
+
+**הדגמת COMMIT**
+
+ביצענו עדכון על טבלת המסעדות שבו העלינו את המחיר הממוצע של מסעדות בעיר Fier ב־10 אחוז, ולאחר מכן השתמשנו ב־COMMIT כדי לשמור את השינוי באופן קבוע.
+
+```sql
+BEGIN;
+
+UPDATE RESTAURANT
+SET Average_Price = Average_Price * 1.10
+WHERE City_ID IN (
+    SELECT City_ID
+    FROM CITY
+    WHERE City_Name = 'Fier'
+);
+
+COMMIT;
+```
+
+מצב בסיס הנתונים לפני העדכון:
+
+![commit before](images/update2before.jpeg)
+
+מצב בסיס הנתונים אחרי העדכון ולפני COMMIT:
+
+![commit after update](images/update2after.jpeg)
+
+מצב בסיס הנתונים אחרי COMMIT:
+
+![commit after commit](images/update2after.jpeg)
+
+לאחר ביצוע COMMIT ניתן לראות שהשינוי נשמר בבסיס הנתונים ונשאר כפי שהיה אחרי העדכון.
+
 
 **אינדקסים**
 
