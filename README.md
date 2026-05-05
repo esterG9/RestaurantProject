@@ -541,9 +541,11 @@ CHECK (Feedback_Date <= CURRENT_DATE);
 INSERT INTO FEEDBACK (Feedback_ID, Feedback_Date, Review_Title, Comment, Tourist_ID, Rest_ID)
 VALUES (888888, '2028-01-01', 'Future Meal', 'The food was great in the future!', 1, 1);
 ```
+![alt text](images/Error_from_constraint3.png)
+
 
 **אינדקסים**
-*
+
 1. אינדקס על מזהה התייר בטבלת הזמנות
 
 אינדקס זה נוצר על עמודת מזהה התייר בטבלת ההזמנות, במטרה לשפר את מהירות החיפוש של הזמנות לפי משתמש ולמנוע סריקה מלאה של הטבלה.
@@ -589,4 +591,3 @@ VALUES (888888, '2028-01-01', 'Future Meal', 'The food was great in the future!'
 הסבר תוצאות:
 לפני יצירת האינדקס השאילתה ביצעה סריקה מלאה של הטבלה וסיננה מאות רשומות כדי למצוא את התוצאה המתאימה. לאחר יצירת האינדקס, השאילתה השתמשה באינדקס וגישה ישירה לנתונים, דבר שהוביל לשיפור בזמן הריצה מכ־0.984 מילישניות לכ־0.126 מילישניות.
 
-![alt text](images/Error_from_constraint3.png)
