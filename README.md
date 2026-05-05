@@ -313,7 +313,9 @@ ORDER BY Num_Of_Bookings DESC;
 
 --השיטה הראשונה עם LEFT JOIN ו־GROUP BY טובה יותר, כי היא מחשבת את מספר ההזמנות לכל התיירים ביחד. השיטה השנייה סופרת הזמנות בנפרד עבור כל תייר, ולכן יכולה להיות איטית יותר בטבלה גדולה.
 ```
+
 ![alt text](images/Query_result4.png)
+
 
 ```sql
 
@@ -329,6 +331,7 @@ WHERE EXTRACT(YEAR FROM Booking_Date) = 2025
   AND EXTRACT(MONTH FROM Booking_Date) = 1
 ORDER BY Booking_Date;
 ```
+
 ![alt text](images/Query_result5.png)
 
 ```sql
@@ -505,6 +508,7 @@ WHERE Rest_ID NOT IN (
 ![alt text](images/Delete_Query3(After).png)
 
 **אילוצים**
+
 --1.אילוץ על מספר אנשים להזמנה לפחות 1 והכמות לא תעלה על 20
 תיאור השינוי: הוספת אילוץ CHECK לטבלת BOOKING שמוודא כי מספר האנשים בהזמנה (Num_Of_People) הוא תמיד חיובי (גדול מ-0) ולא עולה על 20, כדי למנוע טעויות הקלדה או הזמנות לא הגיוניות.
 
