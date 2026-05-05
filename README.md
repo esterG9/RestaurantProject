@@ -403,9 +403,11 @@ WHERE Booking_Date < CURRENT_DATE
   AND Status = 'Confirmed';
 ```
 בסיס הנתונים לפני העדכון:
+
 ![before](images/update1before.jpeg)
 
 בסיס הנתונים אחרי העדכון:
+
 ![after](images/update1after.jpeg)
 
 
@@ -421,9 +423,11 @@ WHERE City_ID IN (
 );
 ```
 בסיס הנתונים לפני העדכון:
+
 ![before](images/update2before.jpeg)
 
 בסיס הנתונים אחרי העדכון:
+
 ![after](images/update2after.jpeg)
 
 
@@ -435,9 +439,11 @@ SET password =
     TO_CHAR(birthday, 'YYYY') || First_Name || Tourist_ID;
 ```
 בסיס הנתונים לפני העדכון:
+
 ![before](images/update3before.jpeg)
 
 בסיס הנתונים אחרי העדכון:
+
 ![after](images/update3after.jpeg)
 
 
