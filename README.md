@@ -29,7 +29,7 @@ The system includes 4 main screens:
 Login / Register Screen
     Allows users to log in or create a new account
     
-![alt text](Stage A/images/login_page.png)
+![User Profile](Stage%20A/images/login_page.png)
 
 Profile Setup Screen
     Users enter personal details such as country, age, and preferences
@@ -43,9 +43,10 @@ Home Screen (Navigation Dashboard)
         Search by Name
         Search by Profile
         
-![alt text](images/home-search.png)  
+![User Profile](Stage%20A/images/home-search.png) 
 
-![alt text](images/search-location.png)
+
+![User Profile](Stage%20A/images/search-location.png)
 
 Search & Restaurant Interaction Screen
     Displays restaurant results
@@ -54,11 +55,11 @@ Search & Restaurant Interaction Screen
         Make reservations
         Leave feedback
         
-![alt text](images/location-recommend.png)
+![User Profile](Stage%20A/images/location-recommend.png)
 
-![alt text](images/feedback-form.png)
+![User Profile](Stage%20A/images/feedback-form.png)
 
-![alt text](images/reserve-table.png)
+![User Profile](Stage%20A/images/reserve-table.png)
 
 
 
@@ -69,12 +70,12 @@ https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPrevie
 🗄️ Database Design
 ERD Diagram
 
-📸 ![alt text](images/ERD_Diagram.png)
-**[Download Original File (ERDPlus)](Stage A/ERD_Diagram.erdplus)**
+📸 ![User Profile](Stage%20A/images/ERD_Diagram.png)
+**[Download Original File (ERDPlus)](Stage%20A/ERD_Diagram.erdplus)**
 
 DSD Diagram
 
-📸 ![alt text](images/Dsd_diagram.png)
+📸 ![User Profile](Stage%20A/images/Dsd_diagram.png)
 
 
 ⚙️ Design Decisions
@@ -101,25 +102,26 @@ Constraints were added (such as UNIQUE fields for email and phone) to ensure val
 This file contains all SQL commands required to create the database tables based on the designed schema (ERD & DSD).
 It defines tables, primary keys, foreign keys, and constraints.
 
-🔗[create_table.sql](init-db/create_table.sql)
+🔗[create_table.sql](Stage%20A/init-db/create_table.sql)
+
 
 2. Drop Tables Script
 
 This file includes SQL commands to safely delete all tables from the database in the correct order, preventing dependency errors between tables.
 
-🔗 [dropTables.sql](init-db/dropTables.sql)
+🔗 [dropTables.sql](Stage%20A/init-db/dropTables.sql)
 
 3. Insert Data Script
 
 This file contains SQL INSERT statements used to populate the database with initial data for all tables.
 
-🔗 [insertTables.sql](init-db/insertTables.sql)
+🔗 [insertTables.sql](Stage%20A/init-db/insertTables.sql)
 
 4. Select Queries Script
 
 This file includes SELECT queries that retrieve and display all data from the database tables, used for testing and verification.
 
-🔗 [selectAll.sql](init-db/selectAll.sql)
+🔗 [selectAll.sql](Stage%20A/init-db/selectAll.sql)
 
 ## Data Population Methods
 
@@ -128,19 +130,19 @@ In this project, data was populated using three different methods:
 1. **Python Script Generation**
    A Python script was used to generate large-scale synthetic data (e.g., 20,000 booking records). The script creates realistic randomized values and exports them into CSV files.
 
-   ![alt text](images/Python_Script.png)
+   ![User Profile](Stage%20A/images/Python_Script.png)
 
 3. **External Data Generation Tool (Mockaroo)**
    The Mockaroo website was used to generate structured and realistic datasets for related tables (such as tourists and restaurants).
 
-   ![alt text](images/Mockaroo.jpeg)
+  ![User Profile](Stage%20A/images/Mockaroo.jpeg)
 
-   ![alt text](images/feedback-insert.png)
+  ![User Profile](Stage%20A/images/feedback-insert.png)
 
 5. **Bulk Import Using CSV (COPY command)**
    The generated CSV files (from Python) were loaded into the database using the SQL `COPY` command for efficient bulk insertion.
 
-   ![alt text](images/COPY_command.png)
+  ![User Profile](Stage%20A/images/COPY_command.png)
 
 💾 Backup & Restore
 
@@ -150,15 +152,16 @@ In this project, data was populated using three different methods:
  
 🔗 Backup File:
 [Open Backup File](https://github.com/esterG9/RestaurantProject/blob/main/restaurant_backup_14_04_26%20(1))
+[Open Backup File](https://github.com/esterG9/RestaurantProject/blob/main/Stage%20A/restaurant_backup_14_04_26%20(1))
 
 📸 Screenshot of backup
-![alt text](images/backup.png)
+![User Profile](Stage%20A/images/backup.png)
 📸 Screenshot of restore
-![alt text](images/restore.png)
+![User Profile](Stage%20A/images/restore.png)
 
 DSD diagram from pgAdmin
 
-![alt text](images/DSD_pgAdmin.jpeg)
+![User Profile](Stage%20A/images/DSD_pgAdmin.jpeg)
 
 **Stage B**
 
@@ -197,7 +200,7 @@ ORDER BY r.Rest_Name;
 השיטה הראשונה עם JOIN טובה ויעילה יותר, כי היא מחברת את הטבלאות בצורה ישירה וברורה. השיטה השנייה משתמשת בתתי־שאילתות, ולכן היא יותר מסורבלת ועלולה להיות איטית יותר כי היא מבצעת בדיקות פנימיות נוספות.
 
 
-![alt text](images/Query_result1.png)
+![User Profile](Stage%20A/images/Query_result1.png)
 
 
 
@@ -233,7 +236,7 @@ ORDER BY Average_Price DESC;
 השיטה הראשונה עם EXISTS עדיפה כאן, כי היא בודקת אם קיימת לפחות ביקורת אחת עם דירוג 5 ועוצרת כשנמצאה התאמה. השיטה השנייה עם IN קודם יוצרת רשימה של מסעדות מתאימות ואז בודקת מול הרשימה, ולכן יכולה להיות פחות יעילה.
 
 
-![alt text](images/Query_result2.png)
+![User Profile](Stage%20A/images/Query_result2.png)
 
 
 3.שאילתה להצגת ביקורות למסעדה מהחדשות לישנות
@@ -287,7 +290,7 @@ ORDER BY f.Feedback_Date DESC;
 
 השיטה הראשונה עם JOIN יעילה וברורה יותר, כי היא מחברת את הביקורות ישירות למסעדה ולתייר. השיטה השנייה משתמשת בתתי־שאילתות עבור כל שורה, ולכן היא פחות יעילה ויותר קשה לקריאה.
 
-![alt text](images/Query_result3.png)
+![User Profile](Stage%20A/images/Query_result3.png)
 
 
 
@@ -325,7 +328,7 @@ ORDER BY Num_Of_Bookings DESC;
 השיטה הראשונה עם LEFT JOIN ו־GROUP BY טובה יותר, כי היא מחשבת את מספר ההזמנות לכל התיירים ביחד. השיטה השנייה סופרת הזמנות בנפרד עבור כל תייר, ולכן יכולה להיות איטית יותר בטבלה גדולה.
 
 
-![alt text](images/Query_result4.png)
+![User Profile](Stage%20A/images/Query_result4.png)
 
 
 
@@ -343,7 +346,7 @@ WHERE EXTRACT(YEAR FROM Booking_Date) = 2025
 ORDER BY Booking_Date;
 ```
 
-![alt text](images/Query_result5.png)
+![User Profile](Stage%20A/images/Query_result5.png)
 
 
 6.מי הם 5 התיירים הכי פעילים שביצעו הכי הרבה הזמנות מאושרות
@@ -363,7 +366,7 @@ ORDER BY Total_Confirmed_Bookings DESC
 LIMIT 5;
 ```
 
-![alt text](images/Query_result6.png)
+![User Profile](Stage%20A/images/Query_result6.png)
 
 
 7.הזמנות שבוטלו
@@ -385,7 +388,7 @@ WHERE b.Status = 'Cancelled'
 ORDER BY b.Booking_Date DESC;
 ```
 
-![alt text](images/Query_result7.png)
+![User Profile](Stage%20A/images/Query_result7.png)
 
 
 8.הצגת המסעדה הכי זולה בכל עיר ולכל סוג מטבח
@@ -410,7 +413,7 @@ ORDER BY
     r.Rest_Name;
 ```
 
-![alt text](images/Query_result8.png)
+![User Profile](Stage%20A/images/Query_result8.png)
 
 
 **שאילתות UPDATE**
@@ -424,11 +427,11 @@ WHERE Booking_Date < CURRENT_DATE
 ```
 בסיס הנתונים לפני העדכון:
 
-![before](images/update1before.jpeg)
+![User Profile](Stage%20A/images/update1before.jpeg)
 
 בסיס הנתונים אחרי העדכון:
 
-![after](images/update1after.jpeg)
+![User Profile](Stage%20A/images/update1after.jpeg)
 
 
 2. שאילתה שמעלה את המחיר של מסעדות בעיר - Fier
@@ -444,11 +447,11 @@ WHERE City_ID IN (
 ```
 בסיס הנתונים לפני העדכון:
 
-![before](images/update2before.jpeg)
+![User Profile](Stage%20A/images/update2before.jpeg)
 
 בסיס הנתונים אחרי העדכון:
 
-![after](images/update2after.jpeg)
+![User Profile](Stage%20A/images/update2after.jpeg)
 
 
 3. שאילתה שמאפסת סיסמאות לפי פרטי המשתמש - יוצרת סיסמה לפי שנת לידה, שם ומזהה
@@ -460,11 +463,11 @@ SET password =
 ```
 בסיס הנתונים לפני העדכון:
 
-![before](images/update3before.jpeg)
+![User Profile](Stage%20A/images/update3before.jpeg)
 
 בסיס הנתונים אחרי העדכון:
 
-![after](images/update3after.jpeg)
+![User Profile](Stage%20A/images/update3after.jpeg)
 
 
 
@@ -482,9 +485,9 @@ WHERE TRIM(Status) IN ('Confirmed', 'Cancelled')
 );
 
 ```
-![alt text](images/Delete_query1(before).png)
+![User Profile](Stage%20A/images/Delete_query1(before).png)
 
-![alt text](images/Delete_Query1(After).png)
+![User Profile](Stage%20A/images/Delete_Query1(After).png)
 
 
 --2.שאילתה מוחקת דירוגים גרועים למסעדה ספציפית
@@ -502,9 +505,9 @@ WHERE degree = 1
 );
 ```
 
-![alt text](images/Delete_query2(before).png)
+![User Profile](Stage%20A/images/Delete_query2(before).png)
 
-![alt text](images/Delete_Query2(After).png)
+![User Profile](Stage%20A/images/Delete_Query2(After).png)
 
 
 
@@ -516,9 +519,9 @@ WHERE Rest_ID NOT IN (
     FROM BOOKING
 );
 ```
-![alt text](images/Delete_query3(before).png)
+![User Profile](Stage%20A/images/Delete_query3(before).png)
 
-![alt text](images/Delete_Query3(After).png)
+![User Profile](Stage%20A/images/Delete_Query3(After).png)
 
 **אילוצים**
 
@@ -535,7 +538,7 @@ CHECK (Num_Of_People > 0 AND Num_Of_People <= 20);
 INSERT INTO BOOKING (Booking_ID, Tourist_ID, Rest_ID, Booking_Date, Num_Of_People, Status)
 VALUES (999999, 1, 1, '2026-05-04', 25, 'Confirmed');
 ```
-![alt text](images/Error_from_constraint1.png)
+![User Profile](Stage%20A/images/Error_from_constraint1.png)
 
 
 --2.אילוץ על מספר הטלפון של המסעדה חייב להיות מספרים בלבדאו סימן ידוע למספר טלפון
@@ -551,7 +554,7 @@ UPDATE RESTAURANT
 SET Phone_Number = 'Call-Me-Now' 
 WHERE Rest_ID = (SELECT MIN(Rest_ID) FROM RESTAURANT);
 ```
-![alt text](images/Error_from_constraint2.png)
+![User Profile](Stage%20A/images/Error_from_constraint2.png)
 
 --3.אילוץ על תאריך המשוב לא יהיה בעתיד
 תיאור השינוי: הוספת אילוץ CHECK לטבלת FEEDBACK המבטיח שתאריך המשוב (Feedback_Date) יהיה קטן או שווה לתאריך הנוכחי (CURRENT_DATE). זה מונע "זיוף" של משובים עתידיים או טעויות הקלדה בשנה.
@@ -565,7 +568,7 @@ CHECK (Feedback_Date <= CURRENT_DATE);
 INSERT INTO FEEDBACK (Feedback_ID, Feedback_Date, Review_Title, Comment, Tourist_ID, Rest_ID)
 VALUES (888888, '2028-01-01', 'Future Meal', 'The food was great in the future!', 1, 1);
 ```
-![alt text](images/Error_from_constraint3.png)
+![User Profile](Stage%20A/images/Error_from_constraint3.png)
 
 **ROLLBACK & COMMIT**
 
@@ -585,15 +588,15 @@ ROLLBACK;
 ```
 מצב בסיס הנתונים לפני העדכון:
 
-![rollback before](images/update1before.jpeg)
+![rollback before](Stage%20A/images/update1before.jpeg)
 
 מצב בסיס הנתונים אחרי העדכון ולפני ROLLBACK:
 
-![rollback after update](images/update1after.jpeg)
+![rollback after update](Stage%20A/images/update1after.jpeg)
 
 מצב בסיס הנתונים אחרי ROLLBACK:
 
-![rollback after rollback](images/update1before.jpeg)
+![rollback after rollback](Stage%20A/images/update1before.jpeg)
 
 לאחר ביצוע ROLLBACK ניתן לראות שהנתונים חזרו למצב המקורי.
 
@@ -618,15 +621,15 @@ COMMIT;
 
 מצב בסיס הנתונים לפני העדכון:
 
-![commit before](images/update2before.jpeg)
+![commit before](Stage%20A/images/update2before.jpeg)
 
 מצב בסיס הנתונים אחרי העדכון ולפני COMMIT:
 
-![commit after update](images/update2after.jpeg)
+![commit after update](Stage%20A/images/update2after.jpeg)
 
 מצב בסיס הנתונים אחרי COMMIT:
 
-![commit after commit](images/update2after.jpeg)
+![commit after commit](Stage%20A/images/update2after.jpeg)
 
 לאחר ביצוע COMMIT ניתן לראות שהשינוי נשמר בבסיס הנתונים ונשאר כפי שהיה אחרי העדכון.
 
@@ -639,11 +642,11 @@ COMMIT;
 
 תוכנית ביצוע לפני יצירת האינדקס:
 
-![before](images/index1before.png)
+![before](Stage%20A/images/index1before.png)
 
 תוכנית ביצוע אחרי יצירת האינדקס:
 
-![after](images/index1after.png)
+![after](Stage%20A/images/index1after.png)
 
 הסבר תוצאות:
 לפני יצירת האינדקס, השאילתה ביצעה סריקה מלאה של טבלת ההזמנות ועברה על עשרות אלפי רשומות כדי למצוא את ההזמנות של המשתמש, דבר שגרם לזמן ריצה גבוה יחסית.
@@ -655,11 +658,11 @@ COMMIT;
 
 תוכנית ביצוע לפני יצירת האינדקס:
 
-![before](images/index2before.png)
+![before](Stage%20A/images/index2before.png)
 
 תוכנית ביצוע אחרי יצירת האינדקס:
 
-![after](images/index2after.png)
+![after](Stage%20A/images/index2after.png)
 
 הסבר תוצאות:
 לפני יצירת האינדקס, השאילתה סרקה את כל טבלת המסעדות וסיננה את הרשומות שאינן שייכות לעיר המבוקשת.
@@ -671,12 +674,15 @@ COMMIT;
 
 תוכנית ביצוע לפני יצירת האינדקס:
 
-![before](images/index3before.png)
+![before](Stage%20A/images/index3before.png)
 
 תוכנית ביצוע אחרי יצירת האינדקס:
 
-![after](images/index3after.png)
+![after](Stage%20A/images/index3after.png)
 
 הסבר תוצאות:
 לפני יצירת האינדקס, השאילתה עברה על כל טבלת הביקורות וסיננה את הרשומות שאינן שייכות למסעדה המבוקשת.
 לאחר יצירת האינדקס, השאילתה הצליחה לגשת ישירות לביקורות של אותה מסעדה באמצעות האינדקס, ללא צורך בסריקה מלאה, ולכן זמן הריצה השתפר והביצוע הפך ליעיל יותר.
+
+
+**Stage C**
