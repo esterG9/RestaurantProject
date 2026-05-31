@@ -34,8 +34,7 @@ Login / Register Screen
 Profile Setup Screen
     Users enter personal details such as country, age, and preferences
     
-![alt text](Stage A/images/user-profile.png)
-
+![User Profile](Stage%20A/images/user-profile.png)
 Home Screen (Navigation Dashboard)
     Main screen after login
     Includes navigation bar:
