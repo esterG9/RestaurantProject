@@ -29,7 +29,7 @@ The system includes 4 main screens:
 Login / Register Screen
     Allows users to log in or create a new account
     
-![alt text](images/login_page.png)
+![alt text](Stage A/images/login_page.png)
 
 Profile Setup Screen
     Users enter personal details such as country, age, and preferences
