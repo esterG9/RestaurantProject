@@ -239,3 +239,45 @@ REFERENCES public.review_merge(review_id);
 DROP TABLE public.review;
 ALTER TABLE public.review_merge
 RENAME TO review;
+
+CREATE TABLE IF NOT EXISTS public.review_object (
+    review_object_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+);
+
+ALTER TABLE public.restaurant
+ADD COLUMN IF NOT EXISTS review_object_id INTEGER;
+
+ALTER TABLE public.apartment
+ADD COLUMN IF NOT EXISTS review_object_id INTEGER;
+
+ALTER TABLE public.review
+ADD COLUMN IF NOT EXISTS review_object_id INTEGER;
+
+INSERT INTO public.review_object
+SELECT
+FROM generate_series(
+    1,
+    (SELECT COUNT(*) FROM public.restaurant) +
+    (SELECT COUNT(*) FROM public.apartment)
+);
+
+UPDATE public.restaurant r
+SET review_object_id = ro.review_object_id
+FROM public.review_object ro
+WHERE ro.review_object_id = r.rest_id;
+
+UPDATE public.apartment a
+SET review_object_id = a.apartment_id + 500;
+
+UPDATE public.review r
+SET review_object_id = r.rest_or_apartment_id
+WHERE r.booking_type = 'restaurant';
+
+UPDATE public.review r
+SET review_object_id = r.rest_or_apartment_id + 500
+WHERE r.booking_type = 'apartment';
+
+ALTER TABLE public.review
+ADD CONSTRAINT fk_review_review_object
+FOREIGN KEY (review_object_id)
+REFERENCES public.review_object(review_object_id);
