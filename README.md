@@ -686,3 +686,193 @@ COMMIT;
 
 
 **Stage C**
+
+New Wing DSD
+
+![DSD BNB](Stage%20B/images/DSD_BNB.png)
+
+New Wing ERD
+
+![ERD BNB](Stage%20B/images/ERD_BNB.png)
+
+Shared ERD
+
+![ERD Integration](Stage%20B/images/ERD_Integration.png)
+
+Shared DSD
+
+![DSD Integration](Stage%20B/images/DSD_Integration.png)
+
+**החלטות שנעשו בשלב האינטגרציה**
+
+1. איחוד כל ההזמנות לטבלת BOOKING אחת
+
+החלטנו לאחד את טבלאות ההזמנות של שני האגפים לטבלת BOOKING מרכזית אחת, כדי למנוע כפילויות ולאפשר ניהול אחיד של כל ההזמנות.
+
+2. הזזת מזהי ההזמנות ב־20,000
+
+החלטנו להוסיף 20,000 למזהי ההזמנות של אחת המערכות כדי למנוע התנגשויות בין מפתחות ראשיים בזמן האיחוד.
+
+3. שימוש בישות LOCATION משותפת
+
+החלטנו לרכז את נתוני המיקום בטבלת LOCATION אחת במקום לשמור כתובת ועיר במספר טבלאות, כדי למנוע כפילות מידע.
+
+4. יצירת טבלת REVIEW מאוחדת
+
+החלטנו לאחד את מנגנוני הביקורות של שני האגפים לטבלת REVIEW אחת המכילה ביקורות על מסעדות ועל דירות.
+
+5. יצירת ישות ReviewObject
+
+החלטנו ליצור את הישות ReviewObject כדי לייצג באופן אחיד כל אובייקט שניתן לדרג (מסעדה או דירה), וכך לאפשר קשר אחיד בין ביקורות לבין האובייקט המבוקר.
+
+**תהליך האינטגרציה בין שני בסיסי הנתונים**
+
+1) שינוי שמות טבלאות
+- שינינו את שמות הטבלאות tourist ו-booking ל-tourist1 ו-booking1 כדי למנוע התנגשויות.
+
+2) איחוד טבלת TOURIST
+- הוספנו Passport_Number.
+- הוספנו temp_country.
+- ביטלנו זמנית אילוצי NOT NULL.
+- העברנו את כל התיירים מהמערכת השנייה.
+- מחקנו את הטבלה הישנה ושינינו את שם הטבלה המאוחדת ל-TOURIST.
+
+3) איחוד ערים ומיקומים
+- הוספנו ערים חסרות לטבלת CITY.
+- קישרנו את LOCATION באמצעות City_ID.
+- מחקנו את עמודות City ו-Country הישנות.
+- יצרנו שימוש משותף ב-LOCATION.
+
+4) התאמת טבלת RESTAURANT
+- הוספנו Location_ID.
+- יצרנו רשומות LOCATION חדשות.
+- קישרנו כל מסעדה למיקום שלה.
+- מחקנו את Address ו-City_ID הישנים.
+
+5) איחוד טבלת BOOKING
+- ביטלנו זמנית Identity.
+- הזזנו את מזהי ההזמנות ב-20000.
+- הוספנו Payment_Status.
+- העברנו את כל ההזמנות לטבלה המאוחדת.
+- מחקנו את טבלת BOOKING הישנה.
+- שינינו את שם הטבלה המאוחדת ל-BOOKING.
+
+6) קישור טבלאות הבת
+- קישרנו מחדש את RestaurantBooking ל-BOOKING.
+- קישרנו מחדש את ApartmentBooking ל-BOOKING.
+
+7) הרחבת מערכת הביקורות
+- הוספנו Rating_Type ו-Degree.
+- הוספנו Tourist_ID ו-Rest_ID לטבלת REVIEW.
+- ביטלנו את החובה ל-Booking_ID עבור ביקורות מסעדות.
+
+8) קישור תיירים למדינות
+- הוספנו Country_ID.
+- המרנו שמות מדינות למזהים.
+- מחקנו את Temp_Country.
+- יצרנו Foreign Key ל-COUNTRY.
+
+9) יצירת REVIEW מאוחדת
+- יצרנו את review_merge.
+- הוספנו Booking_Type.
+- הוספנו Tourist_ID.
+- הוספנו Rest_Or_Apartment_ID.
+- העברנו את כל הביקורות לטבלה החדשה.
+- סיווגנו כל ביקורת כמסעדה או דירה.
+
+10) החלפת טבלת REVIEW
+- עדכנו את הקשרים של ApartmentReview.
+- מחקנו את REVIEW הישנה.
+- שינינו את שם review_merge ל-REVIEW.
+
+11) יצירת ReviewObject
+- יצרנו את הטבלה review_object.
+- הוספנו review_object_id ל-restaurant.
+- הוספנו review_object_id ל-apartment.
+- הוספנו review_object_id ל-review.
+- קישרנו כל ביקורת לאובייקט המתאים.
+- יצרנו Foreign Key בין review ל-review_object.
+
+12) תוצאה סופית
+- כל התיירים נמצאים ב-TOURIST.
+- כל ההזמנות נמצאות ב-BOOKING.
+- כל הביקורות נמצאות ב-REVIEW.
+- מסעדות ודירות משתמשות ב-ReviewObject.
+- כל הקשרים נשמרים באמצעות Foreign Keys.
+**מבטים**
+
+תיאור מילולי של המבט: host_properties_summary
+המבט מציג ריכוז נתונים מלא עבור המארחים (Hosts). הוא משלב את פרטי המארח האישיים יחד עם רשימת הדירות שבבעלותו, סוג הנכס והמחיר ללילה. בנוסף, המבט מבצע אגרגציה ומחשב את ממוצע "ציון המיקום" (Location Rating) שנתנו האורחים לכל דירה במסגרת הביקורות שלהם. במידה ודירה מסוימת טרם קיבלה ביקורות, הציון הממוצע המוצג יהיה 0.
+שליפת נתונים בעזרת:
+```sql
+SELECT * FROM public.host_properties_summary LIMIT 10;
+```
+תוצאה:
+
+**שאילתות על המבט:**
+שאילתה 1:
+תיאור מילולי: שליפת נכסי יוקרה שמחירם ללילה גבוה מ-150.00 ש"ח/דולר, ואשר קיבלו בממוצע חוות דעת חיוביות מאוד על המיקום שלהם (ציון ממוצע של 4 ומעלה). התוצאות ממוינות מהמחיר הגבוה לנמוך.
+
+קוד השאילתה:
+```sql
+SELECT host_name, apartment_title, price_per_night, avg_location_rating
+FROM public.host_properties_summary
+WHERE price_per_night > 150.00 AND avg_location_rating >= 4.0
+ORDER BY price_per_night DESC;
+```
+
+**שאילתה 2:**
+תיאור מילולי: שאילתה אגרגטיבית המנתחת את פעילות המארחים. השאילתה מחשבת עבור כל מארח במערכת את סך כל הנכסים שבבעלותו ואת המחיר הממוצע ללילה מבין כל דירותיו. התוצאות ממוינות בסדר יורד לפי כמות הנכסים.
+
+קוד השאילתה:
+
+```sql
+SELECT host_id, host_name, COUNT(apartment_id) AS total_properties, ROUND(AVG(price_per_night), 2) AS avg_host_price
+FROM public.host_properties_summary
+GROUP BY host_id, host_name
+ORDER BY total_properties DESC;
+```
+
+
+תיאור מילולי של המבט: restaurant_bookings_details
+המבט מרכז את כל המידע הרלוונטי על הזמנת שולחנות במסעדות. הוא מחבר בין טבלת המסעדות (שם המסעדה וסוג המטבח) לבין טבלת הזמנות המסעדה הספציפיות (כמות הסועדים) וטבלת ההזמנות הכללית (תאריך ההזמנה וסטטוס ההזמנה הנוכחי). המבט מאפשר לראות את כל היסטוריית ופרטי ההושבה בפלטפורמה בצורה ישירה וללא צורך בחיבורים חוזרים.
+
+שליפת נתונים מהמבט:
+```sql
+SELECT * FROM public.restaurant_bookings_details LIMIT 10;
+```
+
+שאילתות על המבט restaurant_bookings_details
+שאילתה 1:
+תיאור מילולי: שליפת כל ההזמנות שאושרו במערכת (Confirmed) עבור קבוצות גדולות של מעל 4 סועדים במסעדות המגישות אוכל איטלקי (Italian). השאילתה מסייעת למסעדות להיערך מראש להושבת קבוצות. התוצאות ממוינות לפי תאריך ההזמנה מהקרוב לרחוק.
+
+קוד השאילתה:
+
+```sql
+SELECT booking_id, rest_name, booking_date, num_of_people
+FROM public.restaurant_bookings_details
+WHERE cuisine_type = 'Italian' 
+  AND booking_status = 'Confirmed' 
+  AND num_of_people > 4
+ORDER BY booking_date ASC;
+```
+
+שאילתה 2:
+תיאור מילולי: שאילתת ניתוח עסקית קצרה וממוקדת המזהה את 5 ימי הפעילות העמוסים ביותר במערכת בכלל המסעדות. העומס נמדד הן לפי כמות ההזמנות שבוצעו באותו יום והן לפי סך כל הסועדים שהוזמנו במצטבר (Diners). השאילתה מסננת הזמנות שבוטלו כדי לקבל תמונת מצב אמיתית.
+
+קוד השאילתה:
+```sql
+SELECT 
+    rest_name,
+    booking_date,
+    COUNT(booking_id) AS total_bookings,
+    SUM(num_of_people) AS total_diners
+FROM 
+    public.restaurant_bookings_details
+WHERE 
+    booking_status != 'Cancelled'
+GROUP BY 
+    rest_name, booking_date
+ORDER BY 
+    total_diners DESC
+```
