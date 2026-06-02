@@ -76,4 +76,3 @@ GROUP BY
     rest_name, booking_date
 ORDER BY 
     total_diners DESC
-LIMIT 5;
