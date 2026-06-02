@@ -689,19 +689,19 @@ COMMIT;
 
 New Wing DSD
 
-![DSD BNB](Stage%20B/images/DSD_BNB.png)
+![DSD BNB](Stage%20C/images/DSD_BNB.png)
 
 New Wing ERD
 
-![ERD BNB](Stage%20B/images/ERD_BNB.png)
+![ERD BNB](Stage%20C/images/ERD_BNB.png)
 
 Shared ERD
 
-![ERD Integration](Stage%20B/images/ERD_Integration.png)
+![ERD Integration](Stage%20C/images/ERD_Integration.png)
 
 Shared DSD
 
-![DSD Integration](Stage%20B/images/DSD_Integration.png)
+![DSD Integration](Stage%20C/images/DSD_Integration.png)
 
 **החלטות שנעשו בשלב האינטגרציה**
 
@@ -808,6 +808,7 @@ Shared DSD
 SELECT * FROM public.host_properties_summary LIMIT 10;
 ```
 תוצאה:
+![Output_view1](Stage%20C/images/Output_view1.png)
 
 **שאילתות על המבט:**
 שאילתה 1:
@@ -821,6 +822,9 @@ WHERE price_per_night > 150.00 AND avg_location_rating >= 4.0
 ORDER BY price_per_night DESC;
 ```
 
+![Query1_view1](Stage%20C/images/Query1output_of_view1.png)
+
+
 **שאילתה 2:**
 תיאור מילולי: שאילתה אגרגטיבית המנתחת את פעילות המארחים. השאילתה מחשבת עבור כל מארח במערכת את סך כל הנכסים שבבעלותו ואת המחיר הממוצע ללילה מבין כל דירותיו. התוצאות ממוינות בסדר יורד לפי כמות הנכסים.
 
@@ -833,6 +837,9 @@ GROUP BY host_id, host_name
 ORDER BY total_properties DESC;
 ```
 
+![Query2_view1](Stage%20C/images/Query2output_of_view1.png)
+
+
 
 תיאור מילולי של המבט: restaurant_bookings_details
 המבט מרכז את כל המידע הרלוונטי על הזמנת שולחנות במסעדות. הוא מחבר בין טבלת המסעדות (שם המסעדה וסוג המטבח) לבין טבלת הזמנות המסעדה הספציפיות (כמות הסועדים) וטבלת ההזמנות הכללית (תאריך ההזמנה וסטטוס ההזמנה הנוכחי). המבט מאפשר לראות את כל היסטוריית ופרטי ההושבה בפלטפורמה בצורה ישירה וללא צורך בחיבורים חוזרים.
@@ -841,6 +848,9 @@ ORDER BY total_properties DESC;
 ```sql
 SELECT * FROM public.restaurant_bookings_details LIMIT 10;
 ```
+תוצאה:
+![Output_view2](Stage%20C/images/Output_view2.png)
+
 
 שאילתות על המבט restaurant_bookings_details
 שאילתה 1:
@@ -856,6 +866,9 @@ WHERE cuisine_type = 'Italian'
   AND num_of_people > 4
 ORDER BY booking_date ASC;
 ```
+
+![Query1_view2](Stage%20C/images/Query1output_of_view2.png)
+
 
 שאילתה 2:
 תיאור מילולי: שאילתת ניתוח עסקית קצרה וממוקדת המזהה את 5 ימי הפעילות העמוסים ביותר במערכת בכלל המסעדות. העומס נמדד הן לפי כמות ההזמנות שבוצעו באותו יום והן לפי סך כל הסועדים שהוזמנו במצטבר (Diners). השאילתה מסננת הזמנות שבוטלו כדי לקבל תמונת מצב אמיתית.
@@ -876,3 +889,5 @@ GROUP BY
 ORDER BY 
     total_diners DESC
 ```
+
+![Query2_view2](Stage%20C/images/Query2output_of_view2.png)
