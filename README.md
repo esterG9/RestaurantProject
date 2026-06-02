@@ -1,4 +1,11 @@
-📊 DB Project – Stage A
+## Table of Contents
+
+- [Stage A](#stage-a)
+- [Stage B](#stage-b)
+- [Stage C](#stage-c)
+
+📊 DB Project 
+#**Stage A**
 🍽️ Ordering Restaurants System
 
 👩‍💻 Submitted by
@@ -163,7 +170,7 @@ DSD diagram from pgAdmin
 
 ![User Profile](Stage%20A/images/DSD_pgAdmin.jpeg)
 
-**Stage B**
+#**Stage B**
 
 **שאילתות SELECT**
 
@@ -685,7 +692,7 @@ COMMIT;
 לאחר יצירת האינדקס, השאילתה הצליחה לגשת ישירות לביקורות של אותה מסעדה באמצעות האינדקס, ללא צורך בסריקה מלאה, ולכן זמן הריצה השתפר והביצוע הפך ליעיל יותר.
 
 
-**Stage C**
+#**Stage C**
 
 New Wing DSD
 
