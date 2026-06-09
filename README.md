@@ -912,7 +912,6 @@ ORDER BY
 
 תוכנית זו עוסקת בניהול מארחים ודירות במערכת. מטרתה לחשב את סך ההכנסות של מארח מסוים מכל ההזמנות שבוצעו בדירות שבבעלותו, ולעדכן את מחירי הלינה של כל הדירות השייכות לו באחוז מסוים. התוכנית כוללת פונקציה, פרוצדורה ותוכנית ראשית המדגימה את פעולתן.
 
----
 
 # פונקציה 1 – host_revenue_report
 
@@ -1113,3 +1112,183 @@ END $$;
 ## הוכחת הרצה
 
 ![הרצת התוכנית הראשית](Stage%20D/images/program1.png)
+
+
+# תוכנית 2 – חישוב ממוצע דירוגים לתייר וניתוח תיירים נאמנים
+
+## תיאור כללי
+
+תוכנית זו עוסקת בתיירים ובביקורות במערכת. מטרתה לחשב את ממוצע הדירוגים שנתן תייר מסוים, ובנוסף לנתח תיירים לפי כמות ההזמנות שלהם כדי לזהות תיירים נאמנים או לקוחות VIP.
+
+התוכנית כוללת פונקציה, פרוצדורה ותוכנית ראשית המדגימה את פעולתן.
+
+
+# פונקציה 2 – fn_get_tourist_average_rating
+
+## תיאור
+
+פונקציה זו מקבלת מזהה תייר ומחשבת את ממוצע הדירוגים שנתן אותו תייר בטבלת הביקורות.
+
+הפונקציה בודקת תחילה שהתייר קיים במערכת. לאחר מכן היא משתמשת ב־Explicit Cursor כדי לעבור על כל הביקורות של אותו תייר, סוכמת את הדירוגים ומחשבת ממוצע.
+
+אם התייר לא קיים, או אם אין לו ביקורות, נזרקת חריגה ומוצגת הודעת שגיאה. במקרה כזה הפונקציה מחזירה את הערך `0.00`.
+
+## קוד
+
+```sql
+CREATE OR REPLACE FUNCTION public.fn_get_tourist_average_rating(p_tourist_id INT)
+RETURNS NUMERIC AS $$
+DECLARE
+    cur_reviews CURSOR FOR 
+        SELECT r.rating 
+        FROM public.review r
+        WHERE r.tourist_id = p_tourist_id;
+        
+    r_review RECORD;
+    
+    v_total_rating INT := 0;
+    v_review_count INT := 0;
+    v_avg_rating NUMERIC(3,2) := 0.00;
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM public.tourist WHERE tourist_id = p_tourist_id) THEN
+        RAISE EXCEPTION 'Tourist with ID % does not exist in the system.', p_tourist_id;
+    END IF;
+
+    OPEN cur_reviews;
+    LOOP
+        FETCH cur_reviews INTO r_review;
+        EXIT WHEN NOT FOUND;
+        
+        v_total_rating := v_total_rating + r_review.rating;
+        v_review_count := v_review_count + 1;
+    END LOOP;
+    CLOSE cur_reviews;
+
+    IF v_review_count = 0 THEN
+        RAISE EXCEPTION 'This tourist (ID %) has not submitted any reviews yet.', p_tourist_id;
+    ELSE
+        v_avg_rating := ROUND(v_total_rating::NUMERIC / v_review_count, 2);
+    END IF;
+
+    RETURN v_avg_rating;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE NOTICE 'An error occurred in fn_get_tourist_average_rating: %', SQLERRM;
+        RETURN 0.00;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+## דוגמת בדיקה
+
+```sql
+SELECT review_id, rating
+FROM public.review
+WHERE tourist_id = 358;
+```
+
+## הוכחת הרצה
+
+![פלט הפונקציה השנייה](Stage%20D/images/function2.png)
+
+
+# פרוצדורה 2 – sp_reward_loyal_tourists
+
+## תיאור
+
+פרוצדורה זו מקבלת מספר מינימלי של הזמנות ובודקת אילו תיירים עומדים בתנאי זה.
+
+הפרוצדורה עוברת על התיירים באמצעות לולאת `FOR`, שבה נעשה שימוש ב־Implicit Cursor. עבור כל תייר היא סופרת את מספר ההזמנות שלו, ולאחר מכן מדפיסה הודעה האם מדובר בלקוח רגיל או בלקוח VIP.
+
+אם לתייר יש לפחות 5 הזמנות, הוא מוגדר כלקוח VIP. אחרת הוא מוגדר כלקוח רגיל. בסיום הפרוצדורה מודפס מספר התיירים שנותחו.
+
+בפרוצדורה זו אין שינוי בפועל בטבלאות, ולכן אין צילום “לפני ואחרי”, אלא צילום של ההרצה וההודעות שהודפסו.
+
+## קוד
+
+```sql
+CREATE OR REPLACE PROCEDURE public.sp_reward_loyal_tourists(p_min_bookings INT)
+AS $$
+DECLARE
+    v_tourist_record RECORD;
+    v_updated_count INT := 0;
+BEGIN
+    RAISE NOTICE 'Starting loyalty reward program update...';
+
+    FOR v_tourist_record IN 
+        SELECT t.tourist_id, t.first_name, t.last_name, COUNT(b.booking_id) AS booking_count
+        FROM public.tourist t
+        JOIN public.booking b ON t.tourist_id = b.tourist_id
+        GROUP BY t.tourist_id, t.first_name, t.last_name
+        HAVING COUNT(b.booking_id) >= p_min_bookings
+    LOOP
+        IF v_tourist_record.booking_count >= 5 THEN
+            RAISE NOTICE 'Tourist % % (ID: %) is a VIP customer with % bookings.', 
+                v_tourist_record.first_name, v_tourist_record.last_name, v_tourist_record.tourist_id, v_tourist_record.booking_count;
+        ELSE
+            RAISE NOTICE 'Tourist % % (ID: %) is a Regular customer with % bookings.', 
+                v_tourist_record.first_name, v_tourist_record.last_name, v_tourist_record.tourist_id, v_tourist_record.booking_count;
+        END IF;
+        
+        v_updated_count := v_updated_count + 1;
+    END LOOP;
+    
+    RAISE NOTICE 'Loyalty reward program compilation completed. Total analyzed: %', v_updated_count;
+    
+    COMMIT;
+END;
+$$ LANGUAGE plpgsql;
+```
+
+## קריאה לפרוצדורה
+
+```sql
+CALL public.sp_reward_loyal_tourists(72);
+```
+
+## הוכחת הרצה
+
+![פלט הפרוצדורה השנייה](Stage%20D/images/procedure2.png)
+
+
+# תוכנית ראשית 2
+
+## תיאור
+
+תוכנית זו מדגימה את השימוש בפונקציה ובפרוצדורה כחלק מתהליך מלא.
+
+התוכנית מבצעת את השלבים הבאים:
+
+1. הדפסת הודעת התחלה.
+2. קריאה לפונקציה שמחשבת את ממוצע הדירוגים של תייר מסוים.
+3. הדפסת הממוצע שהתקבל.
+4. קריאה לפרוצדורה שמנתחת תיירים לפי מספר ההזמנות שלהם.
+5. הדפסת הודעת סיום לאחר שההרצה הסתיימה בהצלחה.
+
+באמצעות תוכנית זו ניתן לראות שהפונקציה והפרוצדורה פועלות בצורה תקינה, מחזירות תוצאה ומדפיסות הודעות מתאימות.
+
+## קוד
+
+```sql
+DO $$
+DECLARE
+    v_test_tourist_id INT := 358;
+    v_calculated_avg NUMERIC(3,2);
+BEGIN
+    RAISE NOTICE '=================== RUNNING MAIN SCRIPT 1 ===================';
+    
+    v_calculated_avg := public.fn_get_tourist_average_rating(v_test_tourist_id);
+    RAISE NOTICE 'The average rating given by Tourist ID % is: %', v_test_tourist_id, v_calculated_avg;
+    
+    RAISE NOTICE '-----------------------------------------------------------';
+    
+    CALL public.sp_reward_loyal_tourists(72);
+    
+    RAISE NOTICE '=================== SCRIPT 1 EXECUTED SUCCESSFULLY ===================';
+END $$;
+```
+
+## הוכחת הרצה
+
+![הרצת התוכנית הראשית השנייה](Stage%20D/images/program2.png)
