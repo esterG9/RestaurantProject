@@ -972,9 +972,8 @@ SELECT host_revenue_report(101503157);
 
 ## הוכחת הרצה
 
-![פלט הפונקציה](images/function1.png.jpeg)
+![פלט הפונקציה](Stage%20D/images/function1.png)
 
----
 
 # פרוצדורה 1 – update_host_apartment_prices
 
@@ -1049,13 +1048,12 @@ CALL update_host_apartment_prices(997169711, 5);
 
 ## הוכחת הרצה – לפני העדכון
 
-![לפני עדכון המחירים](images/procedure1_before.png.jpeg)
+![לפני עדכון המחירים](Stage%20D/images/procedure1_before.png)
 
 ## הוכחת הרצה – לאחר העדכון
 
-![לאחר עדכון המחירים](images/procedure1_after.png.jpeg)
+![לאחר עדכון המחירים](Stage%20D/images/procedure1_after.png)
 
----
 
 # תוכנית ראשית 1
 
@@ -1114,4 +1112,4 @@ END $$;
 
 ## הוכחת הרצה
 
-![הרצת התוכנית הראשית](images/program1.png.jpeg)
+![הרצת התוכנית הראשית](Stage%20D/images/program1.png)
