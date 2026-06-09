@@ -3,6 +3,7 @@
 - [Stage A](#stage-a)
 - [Stage B](#stage-b)
 - [Stage C](#stage-c)
+- [Stage D](#stage-d)
 
 📊 DB Project 
 
@@ -900,3 +901,217 @@ ORDER BY
 ```
 
 ![Query2_view2](Stage%20C/images/Query2output_of_view2.png)
+
+
+## Stage D
+
+
+# תוכנית 1 – חישוב הכנסות מארח ועדכון מחירי דירות
+
+## תיאור כללי
+
+תוכנית זו עוסקת בניהול מארחים ודירות במערכת. מטרתה לחשב את סך ההכנסות של מארח מסוים מכל ההזמנות שבוצעו בדירות שבבעלותו, ולעדכן את מחירי הלינה של כל הדירות השייכות לו באחוז מסוים. התוכנית כוללת פונקציה, פרוצדורה ותוכנית ראשית המדגימה את פעולתן.
+
+---
+
+# פונקציה 1 – host_revenue_report
+
+## תיאור
+
+פונקציה זו מקבלת מזהה מארח (Host ID) ומחשבת את סך ההכנסות שהתקבלו מכל ההזמנות שבוצעו בדירות השייכות למארח זה.
+
+הפונקציה משתמשת ב־Cursor כדי לעבור על כל ההזמנות הרלוונטיות, אוספת את ערכי ה־`total_price` ומחזירה את סכום ההכנסות הכולל.
+
+במקרה של שגיאה, הפונקציה מציגה הודעת שגיאה ומחזירה את הערך `-1`.
+
+## קוד
+
+```sql
+CREATE OR REPLACE FUNCTION host_revenue_report(p_host_id INT)
+RETURNS NUMERIC
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    rec RECORD;
+    total_revenue NUMERIC := 0;
+
+    cur_bookings CURSOR FOR
+        SELECT ab.total_price
+        FROM apartmentbooking ab
+        JOIN apartment a ON ab.apartment_id = a.apartment_id
+        WHERE a.host_id = p_host_id;
+BEGIN
+    OPEN cur_bookings;
+
+    LOOP
+        FETCH cur_bookings INTO rec;
+        EXIT WHEN NOT FOUND;
+
+        IF rec.total_price IS NOT NULL THEN
+            total_revenue := total_revenue + rec.total_price;
+        END IF;
+    END LOOP;
+
+    CLOSE cur_bookings;
+
+    RETURN total_revenue;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE NOTICE 'Error in host_revenue_report: %', SQLERRM;
+        RETURN -1;
+END;
+$$;
+```
+
+## דוגמת הרצה
+
+```sql
+SELECT host_revenue_report(101503157);
+```
+
+## הוכחת הרצה
+
+![פלט הפונקציה](images/function1.png.jpeg)
+
+---
+
+# פרוצדורה 1 – update_host_apartment_prices
+
+## תיאור
+
+פרוצדורה זו מקבלת מזהה מארח ואחוז עדכון.
+
+הפרוצדורה עוברת על כל הדירות השייכות למארח ומעדכנת את מחיר הלינה ללילה של כל דירה בהתאם לאחוז שהתקבל.
+
+המחיר החדש מחושב באמצעות הוספת האחוז המבוקש למחיר הקיים.
+
+אם מתקבל אחוז קטן או שווה לאפס, נזרקת חריגה (Exception).
+
+## קוד
+
+```sql
+CREATE OR REPLACE PROCEDURE update_host_apartment_prices(
+    p_host_id INT,
+    p_percent NUMERIC
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    rec RECORD;
+    new_price NUMERIC;
+BEGIN
+
+    IF p_percent <= 0 THEN
+        RAISE EXCEPTION 'Percent must be positive';
+    END IF;
+
+    FOR rec IN
+        SELECT apartment_id,
+               price_per_night
+        FROM apartment
+        WHERE host_id = p_host_id
+    LOOP
+
+        new_price :=
+            rec.price_per_night +
+            (rec.price_per_night * p_percent / 100);
+
+        UPDATE apartment
+        SET price_per_night = new_price
+        WHERE apartment_id = rec.apartment_id;
+
+    END LOOP;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE NOTICE 'Error in update_host_apartment_prices: %', SQLERRM;
+END;
+
+$$;
+```
+
+## בדיקה לפני ההרצה
+
+```sql
+SELECT apartment_id,
+       title,
+       price_per_night
+FROM apartment
+WHERE host_id = 997169711;
+```
+
+## קריאה לפרוצדורה
+
+```sql
+CALL update_host_apartment_prices(997169711, 5);
+```
+
+## הוכחת הרצה – לפני העדכון
+
+![לפני עדכון המחירים](images/procedure1_before.png.jpeg)
+
+## הוכחת הרצה – לאחר העדכון
+
+![לאחר עדכון המחירים](images/procedure1_after.png.jpeg)
+
+---
+
+# תוכנית ראשית 1
+
+## תיאור
+
+תוכנית זו מדגימה את השימוש בפונקציה ובפרוצדורה כחלק מתהליך מלא.
+
+התוכנית מבצעת את השלבים הבאים:
+
+1. הדפסת הודעת התחלה.
+2. הצגת הדירות של המארח לפני העדכון.
+3. חישוב סך ההכנסות של המארח באמצעות הפונקציה.
+4. עדכון מחירי הדירות באמצעות הפרוצדורה.
+5. הצגת הדירות לאחר העדכון.
+6. הדפסת הודעת סיום.
+
+באמצעות תוכנית זו ניתן לראות שהפונקציה והפרוצדורה פועלות בצורה תקינה, מחזירות תוצאות נכונות ומבצעות עדכון בפועל בבסיס הנתונים.
+
+## קוד
+
+```sql
+DO $$
+BEGIN
+    RAISE NOTICE 'Starting Main Program 1';
+    RAISE NOTICE 'This program checks host revenue and updates apartment prices';
+END $$;
+
+
+SELECT apartment_id,
+       title,
+       price_per_night
+FROM apartment
+WHERE host_id = 1
+ORDER BY apartment_id;
+
+
+SELECT host_revenue_report(1) AS total_host_revenue;
+
+
+CALL update_host_apartment_prices(1, 5);
+
+
+SELECT apartment_id,
+       title,
+       price_per_night
+FROM apartment
+WHERE host_id = 1
+ORDER BY apartment_id;
+
+
+DO $$
+BEGIN
+    RAISE NOTICE 'Main Program 1 finished successfully';
+END $$;
+```
+
+## הוכחת הרצה
+
+![הרצת התוכנית הראשית](images/program1.png.jpeg)
