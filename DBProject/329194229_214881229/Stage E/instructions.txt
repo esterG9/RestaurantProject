@@ -1,0 +1,51 @@
+========================================================================
+מערכת ניהול הזמנות מסעדות ודירות נופש - Stage E (ממשק גרפי)
+Restaurant & Apartment Booking System - Step E (GUI)
+========================================================================
+
+--- עברית ---
+
+הוראות הפעלה וכניסה למערכת:
+
+1. ודא שבסיס הנתונים PostgreSQL פעיל ורשת Docker רצה (במיוחד בסיס הנתונים 'IntegratedDB' המכיל את כל הטבלאות המאוחדות).
+2. ודא שפייתון מותקן במחשבך.
+3. **אפשרות א' (הפעלה מהירה):** לחץ לחיצה כפולה על הקובץ 'run.bat' שנמצא בתיקייה זו.
+4. **אפשרות ב' (הפעלה משורת הפקודה CMD/PowerShell):**
+   * פתח את שורת הפקודה ונווט לתיקייה על ידי הפקודה הבאה (שימי לב למירכאות בגלל הרווח בשם התיקייה):
+     cd "C:\RestaurantProject\DBProject\329194229_214881229\Stage E"
+   * הרץ את השרת על ידי הפקודה:
+     py app.py
+5. הדפדפן ייפתח אוטומטית בכתובת http://localhost:5000/ (אם לא נפתח מעצמו, הקלד כתובת זו בדפדפן).
+
+תכונות המערכת:
+* דשבורד (Dashboard): מציג סטטיסטיקות של כמות הרשומות בטבלאות המרכזיות (תיירים, הזמנות, מסעדות, דירות).
+* ניהול טבלאות (CRUD): מאפשר צפייה בכל 16 הטבלאות הבסיסיות, חיפוש, הוספת רשומה, מחיקה ועדכון רשומה.
+  - שימו לב: בכל הטבלאות, מפתחות זרים מוצגים בצורת השמות שלהם (לדוגמה, שם המדינה במקום קוד המדינה).
+  - בטפסי הוספה או עריכה, שדות של מפתחות זרים מוצגים כתיבות בחירה (Dropdown) המכילות את שמות הנתונים לקלות מרבית.
+  - בעת לחיצה על "עדכון לפי מפתח" או כפתור העריכה, המערכת תביא את כל השדות מתוך המפתח שהוזן ומאפשרת לעדכן אותם.
+* שאילתות (Queries): הרצת 3 שאילתות מורכבות משלב ב' (כולל התאמה לסכמה המשותפת).
+* פרוצדורות ופונקציות: הרצת 4 תתי-תוכניות משלב ד' (2 פונקציות ו-2 פרוצדורות) באופן אינטראקטיבי.
+
+
+--- ENGLISH ---
+
+Startup Instructions:
+
+1. Ensure the PostgreSQL database is active (specifically the 'IntegratedDB' database containing all unified tables).
+2. Ensure Python is installed on your computer.
+3. **Option A (Quick Start):** Double-click the 'run.bat' file located in this directory.
+4. **Option B (Command Line CMD/PowerShell):**
+   * Open command line and navigate to this folder by executing (note the quotes around the path due to the space in the folder name):
+     cd "C:\RestaurantProject\DBProject\329194229_214881229\Stage E"
+   * Start the server by executing:
+     py app.py
+5. Your default web browser will automatically open at: http://localhost:5000/ (if it does not, open your browser and navigate to http://localhost:5000/).
+
+System Features:
+* Dashboard: Displays key statistics on the number of records (Tourists, Bookings, Restaurants, Apartments).
+* Table Management (CRUD): Allows viewing, searching, adding, updating, and deleting records from all 16 base tables.
+  - Notice: All foreign keys are joined and resolved to show their readable names instead of raw IDs.
+  - In creation/edit forms, foreign key fields are rendered as dropdown menus showing names for ease of use.
+  - Clicking "Update by Key" or the Edit button fetches all fields for that key, and lets the user update from there.
+* Queries: Running 3 complex queries from Step B (adapted to the unified schema).
+* Procedures & Functions: Running 4 subprograms from Step D (2 functions and 2 procedures) interactively.

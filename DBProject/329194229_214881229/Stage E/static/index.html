@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ממשק ניהול בסיס נתונים - מסעדות ואירוח</title>
+    <!-- Google Fonts: Outfit & Assistant (Assistant for Hebrew readability, Outfit for UI accents) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for beautiful icon elements -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fa-solid fa-utensils logo-icon"></i>
+                <div class="logo-text">
+                    <h2>מערכת DB</h2>
+                    <span>מסעדות ואירוח</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" data-target="page-dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>לוח בקרה</span>
+                </a>
+                <a href="#" class="menu-item" data-target="page-explorer" id="nav-explorer">
+                    <i class="fa-solid fa-database"></i>
+                    <span>סייר טבלאות</span>
+                </a>
+                <a href="#" class="menu-item" data-target="page-queries">
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+                    <span>שאילתות (שלב ב')</span>
+                </a>
+                <a href="#" class="menu-item" data-target="page-procedures">
+                    <i class="fa-solid fa-code"></i>
+                    <span>פונקציות ופרוצדורות</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="student-info">
+                    <p><i class="fa-solid fa-user"></i> עידית כהן (329194229)</p>
+                    <p><i class="fa-solid fa-user"></i> אסתר גראדה (214881229)</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-title">
+                    <h1 id="page-title">לוח בקרה</h1>
+                    <p id="page-subtitle">מבט על של המערכת המאוחדת</p>
+                </div>
+                <div class="db-status">
+                    <span class="status-indicator"></span>
+                    <span>מחובר ל-IntegratedDB</span>
+                </div>
+            </header>
+
+            <!-- Content Pages -->
+            <div class="content-body">
+                
+                <!-- 1. DASHBOARD PAGE -->
+                <section id="page-dashboard" class="page-section active">
+                    <div class="welcome-banner">
+                        <div class="welcome-text">
+                            <h2>שלום וברוכים הבאים למערכת ניהול מאגר המידע! 🚀</h2>
+                            <p>ממשק זה מאפשר שליטה מלאה בבסיס הנתונים המאוחד הכולל את מערכת הזמנת המסעדות ומערכת הזמנת הדירות והאירוח.</p>
+                        </div>
+                        <div class="welcome-icon">
+                            <i class="fa-solid fa-handshake-angle"></i>
+                        </div>
+                    </div>
+
+                    <!-- Stats Row -->
+                    <div class="stats-grid">
+                        <div class="stat-card" data-table="tourist">
+                            <div class="stat-icon tourist-color"><i class="fa-solid fa-users"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-tourists">-</h3>
+                                <p>תיירים רשומים</p>
+                            </div>
+                        </div>
+                        <div class="stat-card" data-table="restaurant">
+                            <div class="stat-icon rest-color"><i class="fa-solid fa-store"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-restaurants">-</h3>
+                                <p>מסעדות במערכת</p>
+                            </div>
+                        </div>
+                        <div class="stat-card" data-table="apartment">
+                            <div class="stat-icon apartment-color"><i class="fa-solid fa-house-chimney"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-apartments">-</h3>
+                                <p>דירות נופש</p>
+                            </div>
+                        </div>
+                        <div class="stat-card" data-table="booking">
+                            <div class="stat-icon booking-color"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div class="stat-info">
+                                <h3 id="stat-bookings">-</h3>
+                                <p>הזמנות שבוצעו</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description Card -->
+                    <div class="glass-card system-info-card">
+                        <h3><i class="fa-solid fa-circle-info"></i> אודות המערכת והטכנולוגיות</h3>
+                        <div class="tech-grid">
+                            <div class="tech-item">
+                                <i class="fa-brands fa-python"></i>
+                                <div>
+                                    <h4>Backend API Server</h4>
+                                    <p>שרת API מבוסס Python Flask ודרייבר Psycopg2 המקשר ישירות ל-PostgreSQL.</p>
+                                </div>
+                            </div>
+                            <div class="tech-item">
+                                <i class="fa-solid fa-database"></i>
+                                <div>
+                                    <h4>PostgreSQL Database</h4>
+                                    <p>בסיס נתונים רלציוני המאחד 16 טבלאות קשורות עם אינדקסים, אילוצים ופרוצדורות.</p>
+                                </div>
+                            </div>
+                            <div class="tech-item">
+                                <i class="fa-brands fa-html5"></i>
+                                <div>
+                                    <h4>Modern Vanilla UI</h4>
+                                    <p>ממשק SPA מהיר ומעוצב בטכנולוגיית Glassmorphic CSS ו-Vanilla Javascript ללא ספריות כבדות.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. DB EXPLORER PAGE -->
+                <section id="page-explorer" class="page-section">
+                    <div class="explorer-toolbar">
+                        <div class="selector-wrapper">
+                            <label for="table-select"><i class="fa-solid fa-list-check"></i> בחר טבלה לניהול:</label>
+                            <select id="table-select">
+                                <option value="" disabled selected>-- בחר טבלה --</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-actions">
+                            <button class="btn btn-primary" id="btn-add-record" disabled>
+                                <i class="fa-solid fa-plus"></i> הוסף רשומה חדשה
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="search-and-info-bar" id="explorer-info-bar" style="display:none;">
+                        <span id="record-count-label"></span>
+                        <span id="suggested-id-label" class="badge"></span>
+                    </div>
+
+                    <!-- Dynamic Table Wrapper -->
+                    <div class="table-container glass-card" id="explorer-table-container">
+                        <div class="table-placeholder">
+                            <i class="fa-solid fa-table-list placeholder-icon"></i>
+                            <p>אנא בחר טבלה מתוך הרשימה לעיל כדי להציג ולנהל את הנתונים שלה.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. QUERIES PAGE -->
+                <section id="page-queries" class="page-section">
+                    <div class="query-toolbar">
+                        <div class="selector-wrapper">
+                            <label for="query-select"><i class="fa-solid fa-magnifying-glass"></i> בחר שאילתה להרצה:</label>
+                            <select id="query-select">
+                                <option value="" disabled selected>-- בחר שאילתה --</option>
+                                <option value="query1">שאילתה 1: חיפוש מסעדה לפי מדינה (מיקום)</option>
+                                <option value="query2">שאילתה 2: חיפוש מסעדות מובחרות עם דירוג 5</option>
+                                <option value="query3">שאילתה 3: הצגת חוות דעת למסעדה מהחדשה לישנה</option>
+                                <option value="query4">שאילתה 4: מספר הזמנות כולל לכל תייר</option>
+                                <option value="query5">שאילתה 5: הזמנות שבוצעו בחודש ושנה ספציפיים</option>
+                                <option value="query6">שאילתה 6: 5 התיירים הכי פעילים עם הזמנות מאושרות</option>
+                                <option value="query7">שאילתה 7: פירוט הזמנות שבוטלו במערכת</option>
+                                <option value="query8">שאילתה 8: המסעדה הזולה ביותר בכל עיר ולכל סוג מטבח</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Query Inputs Panel (Dynamic) -->
+                    <div class="glass-card query-inputs-card" id="query-inputs-panel" style="display:none;">
+                        <h4>פרמטרים לשאילתה</h4>
+                        <form id="query-params-form" class="inline-form">
+                            <!-- Dynamic inputs loaded here -->
+                        </form>
+                    </div>
+
+                    <!-- Query Result Table -->
+                    <div class="table-container glass-card" id="query-result-container">
+                        <div class="table-placeholder">
+                            <i class="fa-solid fa-chart-simple placeholder-icon"></i>
+                            <p>בחר שאילתה כדי להציג את תוצאות הריצה שלה בזמן אמת מול בסיס הנתונים.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. PROCEDURES PAGE -->
+                <section id="page-procedures" class="page-section">
+                    <div class="procedures-grid">
+                        
+                        <!-- Stored Procedures Selector -->
+                        <div class="glass-card procedure-card">
+                            <h3><i class="fa-solid fa-circle-play"></i> הפעלת תת-תוכנית (PL/SQL)</h3>
+                            <div class="selector-wrapper">
+                                <label for="proc-select">בחר פונקציה או פרוצדורה:</label>
+                                <select id="proc-select">
+                                    <option value="" disabled selected>-- בחר --</option>
+                                    <option value="func_host_revenue">פונקציה 1: host_revenue_report (דוח הכנסות מארח)</option>
+                                    <option value="proc_update_prices">פרוצדורה 1: update_host_apartment_prices (עדכון מחירי מארח)</option>
+                                    <option value="func_tourist_rating">פונקציה 2: fn_get_tourist_average_rating (ממוצע דירוגי תייר)</option>
+                                    <option value="proc_reward_tourists">פרוצדורה 2: sp_reward_loyal_tourists (תוכנית הטבות לתיירים נאמנים)</option>
+                                </select>
+                            </div>
+
+                            <!-- Procedure Form Inputs -->
+                            <div id="proc-form-container" style="display:none; margin-top:20px;">
+                                <form id="proc-params-form">
+                                    <!-- Dynamic inputs -->
+                                </form>
+                                <button type="button" class="btn btn-accent" id="btn-run-proc" style="margin-top:15px; width:100%;">
+                                    <i class="fa-solid fa-bolt"></i> הרץ תת-תוכנית
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Results & Console Outputs -->
+                        <div class="glass-card console-card">
+                            <h3><i class="fa-solid fa-terminal"></i> פלט ריצה והשפעה על הנתונים</h3>
+                            <div class="console-output" id="proc-console-output">
+                                <span class="console-comment">-- ממתין להרצת תוכנית --</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stored Procedure Database Effect display table -->
+                    <div class="glass-card db-effect-card" id="proc-effect-container" style="display:none;">
+                        <h4 id="proc-effect-title">השפעת השינוי על בסיס הנתונים</h4>
+                        <div class="table-container" id="proc-effect-table-wrapper" style="max-height: 300px; overflow-y: auto;">
+                            <!-- Mapped dynamic results before/after -->
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ADD/EDIT RECORD MODAL (DYNAMIC CRUD FORM) -->
+    <div class="modal" id="record-modal">
+        <div class="modal-content glass-card">
+            <div class="modal-header">
+                <h3 id="modal-title">רשומה</h3>
+                <span class="modal-close" id="btn-close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="record-form">
+                    <div class="dynamic-inputs-grid" id="modal-inputs-grid">
+                        <!-- Inputs generated dynamically based on selected table metadata -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btn-cancel-modal">ביטול</button>
+                <button type="button" class="btn btn-primary" id="btn-save-record">שמור שינויים</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DYNAMIC POPUP TO NOTIFY USER -->
+    <div class="notification-toast" id="toast">
+        <span id="toast-message">הודעה</span>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>

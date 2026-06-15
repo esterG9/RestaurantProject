@@ -1,0 +1,6 @@
+@echo off
+title Restaurant DB GUI Loader
+echo Starting Database GUI System...
+echo Connecting to IntegratedDB...
+py app.py
+pause
