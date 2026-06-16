@@ -83,7 +83,7 @@ https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPrevie
 ERD Diagram
 
 📸 ![User Profile](Stage%20A/images/ERD_Diagram.png)
-**[Download Original File (ERDPlus)](Stage%20A/ERD_Diagram.erdplus)**
+**[Download Original File (ERDPlus)](Stage%20A/OrderingRestaurants.erdplus)**
 
 DSD Diagram
 
@@ -710,6 +710,8 @@ New Wing ERD
 Shared ERD
 
 ![ERD Integration](Stage%20C/images/ERD_Integration.png)
+**[Download Original File (ERDPlus)](Stage%20C/integrated_erd.erdplus)**
+
 
 Shared DSD
 
@@ -1341,9 +1343,13 @@ END $$;
 ### 🔌 הוראות כניסה והפעלה למערכת
 
 #### דרישות קדם:
-1. **Python 3** מותקן (ניתן להשתמש ב-`py` או `python`).
-2. בסיס הנתונים **PostgreSQL** רץ בתוך קונטיינר Docker (לפי קובץ `docker-compose.yml` של הפרויקט).
-3. התקנת הספריות הדרושות:
+
+**-** התקנה של **Python 3** (ניתן להשתמש ב-`py` או `python`)
+
+**-** בסיס הנתונים **PostgreSQL** רץ בתוך קונטיינר **Docker** (לפי קובץ `docker-compose.yml` של הפרויקט).
+
+**-** התקנת הספריות הדרושות:
+
    ```bash
    py -m pip install psycopg2-binary flask flask-cors python-dotenv
    ```
