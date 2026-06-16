@@ -710,6 +710,8 @@ New Wing ERD
 Shared ERD
 
 ![ERD Integration](Stage%20C/images/ERD_Integration.png)
+**[Download Original File (ERDPlus)](Stage%20C/integrated_erd.erdplus)**
+
 
 Shared DSD
 
