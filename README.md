@@ -83,7 +83,7 @@ https://aistudio.google.com/apps/c8450de9-342a-45b4-97ab-09c26e8ec42a?showPrevie
 ERD Diagram
 
 📸 ![User Profile](Stage%20A/images/ERD_Diagram.png)
-**[Download Original File (ERDPlus)](OrderingRestaurants (1).erdplus)**
+**[Download Original File (ERDPlus)](Stage%20A/OrderingRestaurants (1).erdplus)**
 
 DSD Diagram
 
