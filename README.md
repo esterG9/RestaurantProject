@@ -1342,9 +1342,9 @@ END $$;
 
 #### דרישות קדם:
 
-1. **Python 3** מותקן (ניתן להשתמש ב-`py` או `python`).
-2. בסיס הנתונים **PostgreSQL** רץ בתוך קונטיינר **Docker** (לפי קובץ `docker-compose.yml` של הפרויקט).
-3. התקנת הספריות הדרושות:
+**-** התקנה של **Python 3** (ניתן להשתמש ב-`py` או `python`)
+**-** בסיס הנתונים **PostgreSQL** רץ בתוך קונטיינר **Docker** (לפי קובץ `docker-compose.yml` של הפרויקט).
+**-** התקנת הספריות הדרושות:
 
    ```bash
    py -m pip install psycopg2-binary flask flask-cors python-dotenv
