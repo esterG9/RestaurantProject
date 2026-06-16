@@ -124,7 +124,10 @@ TABLES_METADATA = {
         ],
         "fk": {
             "location_id": {"table": "location", "display": "address"},
-            "review_object_id": {"table": "review_object", "display": "review_object_id"}
+            "review_object_id": {
+                "table": "review_object",
+                "display": "COALESCE((SELECT r.rest_name FROM restaurant r WHERE r.review_object_id = {alias}.review_object_id), (SELECT a.title FROM apartment a WHERE a.review_object_id = {alias}.review_object_id), 'Object ' || {alias}.review_object_id)"
+            }
         },
         "display_col": "rest_name"
     },
@@ -176,7 +179,10 @@ TABLES_METADATA = {
         "fk": {
             "location_id": {"table": "location", "display": "address"},
             "host_id": {"table": "host", "display": "first_name || ' ' || last_name"},
-            "review_object_id": {"table": "review_object", "display": "review_object_id"}
+            "review_object_id": {
+                "table": "review_object",
+                "display": "COALESCE((SELECT r.rest_name FROM restaurant r WHERE r.review_object_id = {alias}.review_object_id), (SELECT a.title FROM apartment a WHERE a.review_object_id = {alias}.review_object_id), 'Object ' || {alias}.review_object_id)"
+            }
         },
         "display_col": "title"
     },
@@ -250,7 +256,15 @@ TABLES_METADATA = {
         ],
         "fk": {
             "tourist_id": {"table": "tourist", "display": "first_name || ' ' || last_name"},
-            "review_object_id": {"table": "review_object", "display": "review_object_id"}
+            "review_object_id": {
+                "table": "review_object",
+                "display": "COALESCE((SELECT r.rest_name FROM restaurant r WHERE r.review_object_id = {alias}.review_object_id), (SELECT a.title FROM apartment a WHERE a.review_object_id = {alias}.review_object_id), 'Object ' || {alias}.review_object_id)"
+            },
+            "rest_or_apartment_id": {
+                "table": "review_object",
+                "display": "CASE WHEN {table}.booking_type = 'restaurant' THEN (SELECT r.rest_name FROM restaurant r WHERE r.rest_id = {table}.rest_or_apartment_id) WHEN {table}.booking_type = 'apartment' THEN (SELECT a.title FROM apartment a WHERE a.apartment_id = {table}.rest_or_apartment_id) ELSE NULL END",
+                "no_join": True
+            }
         },
         "display_col": "comment"
     },
@@ -275,7 +289,7 @@ TABLES_METADATA = {
             {"name": "review_object_id", "type": "int", "label": "Review Object ID", "required": False, "identity": True}
         ],
         "fk": {},
-        "display_col": "review_object_id"
+        "display_col": "COALESCE((SELECT r.rest_name FROM restaurant r WHERE r.review_object_id = review_object.review_object_id), (SELECT a.title FROM apartment a WHERE a.review_object_id = review_object.review_object_id), 'Object ' || review_object.review_object_id)"
     }
 }
 
@@ -378,17 +392,27 @@ def get_table_data(table_name):
         fk_display = fk_info["display"]
         alias = f"join_{i}"
         
+        if fk_info.get("no_join", False):
+            fk_display_expr = fk_display.replace("{table}", "t")
+            select_parts.append(f"({fk_display_expr})::text AS _fk_{fk_col}_display")
+            continue
+            
         # Find PK of target table
         target_pk = TABLES_METADATA[fk_table]["pk"][0]
         
         join_parts.append(f"LEFT JOIN {fk_table} {alias} ON t.{fk_col} = {alias}.{target_pk}")
-        select_parts.append(f"({alias}.{fk_display})::text AS _fk_{fk_col}_display")
+        
+        if "{alias}" in fk_display:
+            fk_display_expr = fk_display.replace("{alias}", alias)
+            select_parts.append(f"({fk_display_expr})::text AS _fk_{fk_col}_display")
+        else:
+            select_parts.append(f"({alias}.{fk_display})::text AS _fk_{fk_col}_display")
         
     select_clause = ", ".join(select_parts)
     join_clause = " ".join(join_parts)
     
-    # Default order by PK
-    order_clause = ", ".join([f"t.{col}" for col in meta["pk"]])
+    # Default order by PK descending to show newest first
+    order_clause = ", ".join([f"t.{col} DESC" for col in meta["pk"]])
     
     query = f"SELECT {select_clause} FROM {table_name} t {join_clause} ORDER BY {order_clause} LIMIT 1000;"
     
@@ -398,6 +422,10 @@ def get_table_data(table_name):
         cur = conn.cursor()
         cur.execute(query)
         rows = cur.fetchall()
+        
+        # Get actual total count of rows in the table
+        cur.execute(f"SELECT COUNT(*) AS total_count FROM {table_name};")
+        total_count = cur.fetchone()["total_count"]
         
         # Get count and suggest next ID for insertion
         suggested_id = None
@@ -411,7 +439,8 @@ def get_table_data(table_name):
         cur.close()
         return jsonify({
             "rows": rows,
-            "suggested_id": suggested_id
+            "suggested_id": suggested_id,
+            "total_count": total_count
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -487,14 +516,45 @@ def insert_data(table_name):
         vals.append(val)
         placeholders.append("%s")
         
-    cols_str = ", ".join(cols)
-    placeholders_str = ", ".join(placeholders)
-    query = f"INSERT INTO {table_name} ({cols_str}) VALUES ({placeholders_str});"
-    
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+        
+        # Auto-generate or lookup review_object_id
+        if table_name in ["restaurant", "apartment"]:
+            cur.execute("INSERT INTO review_object DEFAULT VALUES RETURNING review_object_id;")
+            generated_ro_id = cur.fetchone()["review_object_id"]
+            if "review_object_id" in cols:
+                idx = cols.index("review_object_id")
+                vals[idx] = generated_ro_id
+            else:
+                cols.append("review_object_id")
+                vals.append(generated_ro_id)
+                placeholders.append("%s")
+        elif table_name == "review":
+            booking_type = data.get("booking_type")
+            rest_or_apt_id = data.get("rest_or_apartment_id")
+            if booking_type and rest_or_apt_id:
+                if booking_type == "restaurant":
+                    cur.execute("SELECT review_object_id FROM restaurant WHERE rest_id = %s;", (rest_or_apt_id,))
+                else:
+                    cur.execute("SELECT review_object_id FROM apartment WHERE apartment_id = %s;", (rest_or_apt_id,))
+                row = cur.fetchone()
+                ro_id = row["review_object_id"] if row else None
+                if ro_id:
+                    if "review_object_id" in cols:
+                        idx = cols.index("review_object_id")
+                        vals[idx] = ro_id
+                    else:
+                        cols.append("review_object_id")
+                        vals.append(ro_id)
+                        placeholders.append("%s")
+                        
+        cols_str = ", ".join(cols)
+        placeholders_str = ", ".join(placeholders)
+        query = f"INSERT INTO {table_name} ({cols_str}) VALUES ({placeholders_str});"
+        
         cur.execute(query, vals)
         conn.commit()
         cur.close()
@@ -540,14 +600,32 @@ def update_data(table_name):
         where_parts.append(f"{pk} = %s")
         vals.append(val)
         
-    set_clause = ", ".join(set_parts)
-    where_clause = " AND ".join(where_parts)
-    query = f"UPDATE {table_name} SET {set_clause} WHERE {where_clause};"
-    
     conn = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+        
+        # Auto-update review_object_id for review updates if booking_type/rest_or_apartment_id changed
+        if table_name == "review":
+            booking_type = data.get("booking_type")
+            rest_or_apt_id = data.get("rest_or_apartment_id")
+            if booking_type and rest_or_apt_id:
+                if booking_type == "restaurant":
+                    cur.execute("SELECT review_object_id FROM restaurant WHERE rest_id = %s;", (rest_or_apt_id,))
+                else:
+                    cur.execute("SELECT review_object_id FROM apartment WHERE apartment_id = %s;", (rest_or_apt_id,))
+                row = cur.fetchone()
+                ro_id = row["review_object_id"] if row else None
+                if ro_id:
+                    col_names_in_sets = [c["name"] for c in meta["columns"] if c["name"] not in meta["pk"] and not c["identity"]]
+                    if "review_object_id" in col_names_in_sets:
+                        val_idx = col_names_in_sets.index("review_object_id")
+                        vals[val_idx] = ro_id
+                        
+        set_clause = ", ".join(set_parts)
+        where_clause = " AND ".join(where_parts)
+        query = f"UPDATE {table_name} SET {set_clause} WHERE {where_clause};"
+        
         cur.execute(query, vals)
         conn.commit()
         cur.close()

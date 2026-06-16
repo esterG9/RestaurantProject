@@ -710,6 +710,8 @@ New Wing ERD
 Shared ERD
 
 ![ERD Integration](Stage%20C/images/ERD_Integration.png)
+**[Download Original File (ERDPlus)](Stage%20C/integrated_erd.erdplus)**
+
 
 Shared DSD
 
@@ -1398,6 +1400,13 @@ END $$;
 #### 3. טופס הוספה ועדכון רשומה (CRUD Modal)
 מודאל דינמי המאפשר הזנה. שדות המפתח הזר מופיעים כתיבות בחירה (Select options) המציגות שמות ברורים ולא מזהים מספריים:
 ![מודאל טופס](DBProject/329194229_214881229/Stage%20E/images/crud_modal.png)
+
+בנוסף, מיושם מנגנון דינמי מיוחד בטופס הביקורות (Review Form), שבו שדה בחירת המסעדה או הדירה (`rest_or_apartment_id`) משתנה אוטומטית בהתאם לסוג ההזמנה הנבחר (`booking_type`):
+* **טופס ביקורת למסעדה (Restaurant Review)**:
+![ביקורת מסעדה](DBProject/329194229_214881229/Stage%20E/images/explorer_review_restaurant.png)
+
+* **טופס ביקורת לדירה (Apartment Review)**:
+![ביקורת דירה](DBProject/329194229_214881229/Stage%20E/images/explorer_review_apartment.png)
 
 #### 4. מסך הרצת שאילתות (Stage B Queries Runner)
 בחירת שאילתה 1 (חיפוש מסעדות לפי מדינה), הזנת המדינה "Albania" וקבלת תוצאות מסודרות בטבלה:
