@@ -74,3 +74,10 @@
 ## 📸 תמונות מסך מהפעלת האפליקציה
 
 *(תמונות המסך מופיעות בהמשך דוח ה-README הראשי של הגיט)*
+
+### טופס הביקורות הדינמי החדש (Review Form):
+* **טופס ביקורת למסעדה (Restaurant Review)**:
+![ביקורת מסעדה](images/explorer_review_restaurant.png)
+
+* **טופס ביקורת לדירה (Apartment Review)**:
+![ביקורת דירה](images/explorer_review_apartment.png)
