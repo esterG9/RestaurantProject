@@ -83,7 +83,7 @@ async function loadDashboardStats() {
         const fetchCount = async (tbl) => {
             const res = await fetch(`/api/table/${tbl}`);
             const data = await res.json();
-            return data.rows ? data.rows.length : 0;
+            return data.total_count !== undefined ? data.total_count : (data.rows ? data.rows.length : 0);
         };
 
         const tourists = await fetchCount("tourist");
@@ -176,7 +176,10 @@ async function loadTableData(tableName) {
 
         // Show record counts and details
         document.getElementById("explorer-info-bar").style.display = "flex";
-        document.getElementById("record-count-label").textContent = `סה"כ רשומות: ${rows.length}`;
+        const total = data.total_count !== undefined ? data.total_count : rows.length;
+        document.getElementById("record-count-label").textContent = total > rows.length 
+            ? `סה"כ רשומות מוצגות: ${rows.length} מתוך ${total}` 
+            : `סה"כ רשומות: ${total}`;
         
         const suggestedLabel = document.getElementById("suggested-id-label");
         if (data.suggested_id) {

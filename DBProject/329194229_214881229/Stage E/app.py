@@ -411,8 +411,8 @@ def get_table_data(table_name):
     select_clause = ", ".join(select_parts)
     join_clause = " ".join(join_parts)
     
-    # Default order by PK
-    order_clause = ", ".join([f"t.{col}" for col in meta["pk"]])
+    # Default order by PK descending to show newest first
+    order_clause = ", ".join([f"t.{col} DESC" for col in meta["pk"]])
     
     query = f"SELECT {select_clause} FROM {table_name} t {join_clause} ORDER BY {order_clause} LIMIT 1000;"
     
@@ -422,6 +422,10 @@ def get_table_data(table_name):
         cur = conn.cursor()
         cur.execute(query)
         rows = cur.fetchall()
+        
+        # Get actual total count of rows in the table
+        cur.execute(f"SELECT COUNT(*) AS total_count FROM {table_name};")
+        total_count = cur.fetchone()["total_count"]
         
         # Get count and suggest next ID for insertion
         suggested_id = None
@@ -435,7 +439,8 @@ def get_table_data(table_name):
         cur.close()
         return jsonify({
             "rows": rows,
-            "suggested_id": suggested_id
+            "suggested_id": suggested_id,
+            "total_count": total_count
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
