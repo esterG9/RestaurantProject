@@ -1393,6 +1393,8 @@ FOR EACH ROW
 EXECUTE FUNCTION add_tourist_after_10_reviews_func();
 ```
 ### הוכחת הרצה
+
+
 ```sql
 INSERT INTO review (rating, comment, review_date, booking_type, tourist_id, rest_or_apartment_id)
 VALUES
