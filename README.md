@@ -1390,8 +1390,25 @@ ON review
 FOR EACH ROW
 EXECUTE FUNCTION add_tourist_after_10_reviews_func();
 ```
+### הוכחת הרצה
 
 
+```sql
+INSERT INTO review (rating, comment, review_date, booking_type, tourist_id, rest_or_apartment_id)
+VALUES
+(5, 'Review 1', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 2', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 3', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 4', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 5', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 6', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 7', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 8', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 9', CURRENT_DATE, 'restaurant', 348, 1),
+(5, 'Review 10', CURRENT_DATE, 'restaurant', 348, 1);
+```
+
+![טריגר 3](Stage%20D/images/trigger3.png)
 
 ---
 
