@@ -43,8 +43,7 @@ BEGIN
 EXCEPTION
     -- ו. תפיסת החריגות והדפסת הודעה מסודרת למשתמש
     WHEN OTHERS THEN
-        RAISE NOTICE 'An error occurred in fn_get_tourist_average_rating: %', SQLERRM;
-        RETURN 0.00;
+        RAISE EXCEPTION 'An error occurred in fn_get_tourist_average_rating: %', SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
 

@@ -32,7 +32,7 @@ BEGIN
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE NOTICE 'Error in update_host_apartment_prices: %', SQLERRM;
+        RAISE EXCEPTION 'Error in update_host_apartment_prices: %', SQLERRM;
 END;
 
 $$;
@@ -45,4 +45,5 @@ FROM apartment
 WHERE host_id = 997169711;
 קריאה:
 CALL update_host_apartment_prices(997169711, 5);
+*/
 

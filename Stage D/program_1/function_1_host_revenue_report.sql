@@ -29,8 +29,7 @@ BEGIN
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE NOTICE 'Error in host_revenue_report: %', SQLERRM;
-        RETURN -1;
+        RAISE EXCEPTION 'Error in host_revenue_report: %', SQLERRM;
 END;
 $$;
 

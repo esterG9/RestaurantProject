@@ -961,8 +961,7 @@ BEGIN
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE NOTICE 'Error in host_revenue_report: %', SQLERRM;
-        RETURN -1;
+        RAISE EXCEPTION 'Error in host_revenue_report: %', SQLERRM;
 END;
 $$;
 ```
@@ -1027,7 +1026,7 @@ BEGIN
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE NOTICE 'Error in update_host_apartment_prices: %', SQLERRM;
+        RAISE EXCEPTION 'Error in update_host_apartment_prices: %', SQLERRM;
 END;
 
 $$;
@@ -1178,8 +1177,7 @@ BEGIN
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE NOTICE 'An error occurred in fn_get_tourist_average_rating: %', SQLERRM;
-        RETURN 0.00;
+        RAISE EXCEPTION 'An error occurred in fn_get_tourist_average_rating: %', SQLERRM;
 END;
 $$ LANGUAGE plpgsql;
 ```
